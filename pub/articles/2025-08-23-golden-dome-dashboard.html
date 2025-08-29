@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+<title>Golden Dome for America - Executive Dashboard / 米国「ゴールデン・ドーム」ダッシュボード</title>
+
+<!-- 言語メタデータ -->
+<meta name="article:languages" content="ja,en">
+<meta name="title:ja" content="米国「ゴールデン・ドーム」エグゼクティブダッシュボード">
+<meta name="title:en" content="Golden Dome for America - Executive Dashboard">
+<meta name="description:ja" content="米国の次世代ミサイル防衛システム「ゴールデン・ドーム」の統合型執行ダッシュボード分析">
+<meta name="description:en" content="Comprehensive executive dashboard analysis of America's next-generation missile defense system 'Golden Dome'">
+<meta name="author" content="Defense Intelligence Portal">
+<meta name="category" content="防衛技術">
+<meta name="tags" content="ミサイル防衛,ゴールデン・ドーム,米国,防衛システム,次世代技術">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN","Meiryo", Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg,#0f172a,#1e293b);
+    color:#0f172a;
+    margin:0; padding:24px;
+  }
+  .shell { max-width: 1280px; margin:0 auto; background:#fff; border-radius:18px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,.35);}
+  .header { display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .title h1 { margin:0; font-size: clamp(1.4rem, 2vw + 1rem, 2rem); }
+  .subtitle { color:#475569; margin-top:4px; }
+  .lang { display:flex; gap:8px; }
+  .btn {
+    padding:8px 14px; border-radius:10px; border:1px solid #cbd5e1; background:#f8fafc; font-weight:700; cursor:pointer;
+  }
+  .btn.active { background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-color:transparent; }
+  .kpis { display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-top:16px; }
+  .kpi {
+    background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-radius:14px; padding:14px; box-shadow:0 10px 24px rgba(99,102,241,.3); cursor:pointer;
+  }
+  .kpi .n { font-size:1.8rem; font-weight:800; line-height:1; }
+  .kpi .l { opacity:.9; font-size:.95rem; }
+  .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:16px 0; }
+  .tab { padding:10px 16px; border-radius:12px; background:#e2e8f0; font-weight:700; cursor:pointer; }
+  .tab.active { background:linear-gradient(135deg,#22c55e,#06b6d4); color:#fff; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .card { background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:16px; box-shadow:0 6px 14px rgba(0,0,0,.06); cursor:pointer; position:relative; }
+  .card:hover { transform: translateY(-2px); transition: .2s; }
+  .card h3 { margin:0 0 8px 0; font-size:1.05rem; color:#0f172a; }
+  .pill { font-size:.8rem; background:#f1f5f9; padding:4px 8px; border-radius:999px; margin-right:6px; display:inline-block; }
+  .list {
+    list-style:none; padding:0; margin:8px 0 0 0; color:#334155;
+  }
+  .list li { padding:6px 0; border-bottom:1px dashed #e2e8f0; }
+  .list li:last-child { border-bottom:none; }
+  .tagbar { margin-top:8px; }
+  .tag { display:inline-block; background:#ecfeff; color:#155e75; border:1px solid #a5f3fc; padding:4px 8px; border-radius:999px; margin:2px; font-size:.78rem; }
+  .muted { color:#64748b; }
+  .foot { margin-top:16px; color:#64748b; font-size:.9rem; }
+  .matrix { width:100%; border-collapse:collapse; font-size:.95rem; }
+  .matrix th, .matrix td { border:1px solid #e2e8f0; padding:8px; }
+  .matrix th { background:#f8fafc; text-align:left; }
+  .timeline { display:grid; grid-template-columns: 1fr; gap:10px; margin-top:8px; }
+  .event { border-left:4px solid #6366f1; background:#f8fafc; padding:10px 12px; border-radius:10px; }
+  .event .date { font-weight:800; margin-right:8px; }
+  details { border:1px solid #e2e8f0; background:#f8fafc; padding:10px 12px; border-radius:12px; }
+  summary { cursor:pointer; font-weight:700; }
+  .searchbar { margin:8px 0 16px 0; display:flex; gap:8px; }
+  .searchbar input { flex:1; padding:10px 12px; border-radius:10px; border:1px solid #cbd5e1; }
+  .inline-note { font-size:.85rem; color:#334155; margin-top:8px; }
+  .small { font-size:.9rem; }
+  .badge { display:inline-block; padding:3px 8px; font-size:.75rem; border-radius:999px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; }
+</style>
+</head>
+<body>
+<div class="shell" id="app">
+  <div class="header">
+    <div class="title">
+      <h1 data-ja="🛡️『ゴールデン・ドーム』エグゼクティブ・ダッシュボード" data-en="🛡️ Golden Dome for America — Executive Dashboard">🛡️『ゴールデン・ドーム』エグゼクティブ・ダッシュボード</h1>
+      <div class="subtitle">
+        <span class="badge" data-ja="作成" data-en="Generated">作成</span>
+        <span>2025-08-23 12:00 UTC+09:00</span>
+        <span class="muted">/ JST</span>
+      </div>
+    </div>
+    <div class="lang">
+      <button class="btn active" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      <button class="btn" id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi" onclick="openModal('funding')">
+      <div class="n" id="kpi-funding">$25B</div>
+      <div class="l" data-ja="2025年和解法での初期資金（CRS）" data-en="Initial funding in 2025 reconciliation law (CRS)">2025年和解法での初期資金（CRS）</div>
+      <div class="small">IN12576</div>
+    </div>
+    <div class="kpi" onclick="openModal('layers')">
+      <div class="n">4</div>
+      <div class="l" data-ja="アーキテクチャ層（衛星×1・地上×3）" data-en="Architecture layers (1 space, 3 ground)">アーキテクチャ層（衛星×1・地上×3）</div>
+      <div class="small">Reuters 2025-08-12</div>
+    </div>
+    <div class="kpi" onclick="openModal('leader')">
+      <div class="n">GDA PM</div>
+      <div class="l" data-ja="グートライン大将就任 (2025-07-22)" data-en="Gen. Guetlein confirmed (2025-07-22)">グートライン大将就任 (2025-07-22)</div>
+      <div class="small">DoD Release</div>
+    </div>
+    <div class="kpi" onclick="openModal('lrdr')">
+      <div class="n">LRDR</div>
+      <div class="l" data-ja="ICBM目標の飛翔試験追尾成功 (2025-06-23)" data-en="Tracked ICBM-rep target in flight test (2025-06-23)">ICBM目標の飛翔試験追尾成功 (2025-06-23)</div>
+      <div class="small">DVIDS</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="overview" onclick="switchTab('overview')" data-ja="概要" data-en="Overview">概要</div>
+    <div class="tab" data-tab="systems" onclick="switchTab('systems')" data-ja="システム" data-en="Systems">システム</div>
+    <div class="tab" data-tab="threats" onclick="switchTab('threats')" data-ja="脅威" data-en="Threats">脅威</div>
+    <div class="tab" data-tab="budget" onclick="switchTab('budget')" data-ja="予算・スケジュール" data-en="Budget & Schedule">予算・スケジュール</div>
+    <div class="tab" data-tab="industry" onclick="switchTab('industry')" data-ja="産業状況" data-en="Industry">産業状況</div>
+    <div class="tab" data-tab="risks" onclick="switchTab('risks')" data-ja="リスク/論点" data-en="Risks & Issues">リスク/論点</div>
+  </div>
+
+  <section id="overview" class="panel">
+    <div class="grid">
+      <div class="card" onclick="openModal('eo')">
+        <h3 data-ja="📜 行政命令と基本方針" data-en="📜 Executive Order & Policy">📜 行政命令と基本方針</h3>
+        <div class="tagbar">
+          <span class="pill">EO 14186</span>
+          <span class="pill">2025-01-27</span>
+        </div>
+        <ul class="list">
+          <li data-ja="『ゴールデン・ドーム』構想を公式化し国土防衛の最優先事項に位置付け" data-en="Formalizes 'Golden Dome' as a top homeland defense priority">『ゴールデン・ドーム』構想を公式化し国土防衛の最優先事項に位置付け</li>
+          <li data-ja="全ドメイン（宇宙/海/陸/空/サイバー）での統合MDを指示" data-en="Directs integrated MD across space/sea/land/air/cyber">全ドメイン（宇宙/海/陸/空/サイバー）での統合MDを指示</li>
+          <li data-ja="DoD直轄のプログラム・マネジメント体制を創設" data-en="Creates direct-report PM office in DoD">DoD直轄のプログラム・マネジメント体制を創設</li>
+        </ul>
+      </div>
+      <div class="card" onclick="openModal('concept')">
+        <h3 data-ja="🧩 コンセプト（レイヤー化）" data-en="🧩 Concept (Layered)">🧩 コンセプト（レイヤー化）</h3>
+        <ul class="list">
+          <li data-ja="宇宙配備センサー/迎撃（検討中）" data-en="Space-based sensing/intercept (in study)">宇宙配備センサー/迎撃（検討中）</li>
+          <li data-ja="中間層：GMD/NGI + Aegis/SM-3" data-en="Midcourse: GMD/NGI + Aegis/SM-3">中間層：GMD/NGI + Aegis/SM-3</li>
+          <li data-ja="ターミナル：THAAD / PAC-3 MSE / SM-6 SBT" data-en="Terminal: THAAD / PAC-3 MSE / SM-6 SBT">ターミナル：THAAD / PAC-3 MSE / SM-6 SBT</li>
+          <li data-ja="指揮統制：C2BMCを基幹、将来はAI支援" data-en="C2: C2BMC core, future AI-enabled">指揮統制：C2BMCを基幹、将来はAI支援</li>
+        </ul>
+        <div class="inline-note" data-ja="※ 層別構想は2025年8月時点の説明資料に基づく" data-en="* Layering per briefing slides as of Aug 2025">*</div>
+      </div>
+      <div class="card">
+        <h3 data-ja="🎯 迅速理解のための要点" data-en="🎯 Leadership Takeaways">🎯 迅速理解のための要点</h3>
+        <ul class="list">
+          <li data-ja="『既存戦力の梃入れ＋新規宇宙レイヤー』のハイブリッド" data-en="Hybrid of 'bolster existing systems + new space layer'">『既存戦力の梃入れ＋新規宇宙レイヤー』のハイブリッド</li>
+          <li data-ja="初期25B$で技術実証と設計確定、26年度以降で本格調達" data-en="Initial $25B for tech demos & design, larger procurement post-FY26">初期25B$で技術実証と設計確定、26年度以降で本格調達</li>
+          <li data-ja="NGI/SM-3/THAAD/PAC-3等の既存プログラムを統合・拡張" data-en="Integrates/expands NGI, SM-3, THAAD, PAC-3, etc.">NGI/SM-3/THAAD/PAC-3等の既存プログラムを統合・拡張</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="systems" class="panel" style="display:none">
+    <div class="searchbar">
+      <input id="q" placeholder="Filter / フィルタ（例: LRDR, SM-3, THAAD）" oninput="filterCards(this.value)"/>
+    </div>
+    <div class="grid" id="sys-grid">
+      <!-- Cards injected by JS -->
+    </div>
+
+    <details class="inline-note" style="margin-top:10px;">
+      <summary data-ja="🧪 相互運用の例" data-en="🧪 Interoperability examples">🧪 相互運用の例</summary>
+      <div class="small">
+        <ul class="list">
+          <li data-ja="LRDR→C2BMC→GMD/NGI：大陸間弾道ミサイルの識別/交戦" data-en="LRDR→C2BMC→GMD/NGI: discrimination/engage ICBMs">LRDR→C2BMC→GMD/NGI：大陸間弾道ミサイルの識別/交戦</li>
+          <li data-ja="HBTSS/SDA追尾→Aegis/SM-3・SM-6：宇宙/大気圏内の目標ハンドオフ" data-en="HBTSS/SDA→Aegis/SM-3 or SM-6: space-to-endo handoff">HBTSS/SDA追尾→Aegis/SM-3・SM-6：宇宙/大気圏内の目標ハンドオフ</li>
+          <li data-ja="THAAD⇔PAC-3 MSE：同一火力単位でのレイヤード（実証済）" data-en="THAAD⇔PAC-3 MSE: layered within a unit (demonstrated)">THAAD⇔PAC-3 MSE：同一火力単位でのレイヤード（実証済）</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section id="threats" class="panel" style="display:none">
+    <div class="card">
+      <h3 data-ja="🧮 脅威×対処マトリクス" data-en="🧮 Threats vs. Counters Matrix">🧮 脅威×対処マトリクス</h3>
+      <table class="matrix" id="matrix"></table>
+    </div>
+  </section>
+
+  <section id="budget" class="panel" style="display:none">
+    <div class="grid">
+      <div class="card">
+        <h3 data-ja="💵 予算・法令の要点" data-en="💵 Budget & Law Highlights">💵 予算・法令の要点</h3>
+        <ul class="list">
+          <li data-ja="2025年和解法：総額25B$（次世代MD 18.8B$、層状国土防衛 5.9B$）" data-en="2025 Reconciliation: $25B total (Next-Gen MD $18.8B; Layered Homeland $5.9B)">2025年和解法：総額25B$（次世代MD 18.8B$、層状国土防衛 5.9B$）</li>
+          <li data-ja="2026年度概算要求：MDA資料にGDAの位置付け" data-en="FY26 docs: MDA books reference GDA in scope">2026年度概算要求：MDA資料にGDAの位置付け</li>
+          <li data-ja="産業向け説明：4層構造／新ミサイル・サイト検討" data-en="Industry brief: 4 layers / new NGI missile site under study">産業向け説明：4層構造／新ミサイル・サイト検討</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-ja="📆 マイルストーン" data-en="📆 Milestones">📆 マイルストーン</h3>
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div class="card">
+        <h3 data-ja="🛰️ 今後の注目" data-en="🛰️ Watch Items">🛰️ 今後の注目</h3>
+        <ul class="list">
+          <li data-ja="GPI：開発遅延（約3年）／資金動向" data-en="GPI: ~3-year delay & funding outlook">GPI：開発遅延（約3年）／資金動向</li>
+          <li data-ja="NGI：2028頃の初期配備目標とGMDサイト拡充" data-en="NGI: target IOC ~2028 and potential new site">NGI：2028頃の初期配備目標とGMDサイト拡充</li>
+          <li data-ja="宇宙層：HBTSS/SDAのトラッキング拡充" data-en="Space layer: HBTSS/SDA tracking expansion">宇宙層：HBTSS/SDAのトラッキング拡充</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="industry" class="panel" style="display:none">
+    <div class="grid" id="ind-grid"></div>
+  </section>
+
+  <section id="risks" class="panel" style="display:none">
+    <div class="grid">
+      <div class="card">
+        <h3 data-ja="⚠️ 技術/運用リスク" data-en="⚠️ Technical/Operational Risks">⚠️ 技術/運用リスク</h3>
+        <ul class="list">
+          <li data-ja="宇宙迎撃の可否（技術成熟・法/条約・宇宙デブリ）" data-en="Space intercept feasibility (maturity, law/treaty, debris)">宇宙迎撃の可否（技術成熟・法/条約・宇宙デブリ）</li>
+          <li data-ja="コスト/弾薬消耗と持続性（SM-3/SM-6等の高単価）" data-en="Cost/sustainability of interceptor expenditure (SM-3/SM-6 costs)">コスト/弾薬消耗と持続性（SM-3/SM-6等の高単価）</li>
+          <li data-ja="指揮統制のレイテンシ/AI活用の妥当性" data-en="C2 latency & appropriate AI employment">指揮統制のレイテンシ/AI活用の妥当性</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-ja="📌 経営判断ポイント" data-en="📌 Leadership Calls">📌 経営判断ポイント</h3>
+        <ul class="list">
+          <li data-ja="どの層で勝つか（自社強み×要素技術×量産性）" data-en="Choose the winning layer (strengths × tech × scalability)">どの層で勝つか（自社強み×要素技術×量産性）</li>
+          <li data-ja="C2BMC/IBCS/艦隊Aegis等との連携戦略" data-en="Strategy to plug into C2BMC/IBCS/naval Aegis">C2BMC/IBCS/艦隊Aegis等との連携戦略</li>
+          <li data-ja="産業連携（SpaceX/Palantir/Anduril等）への位置付け" data-en="Positioning vs. SpaceX/Palantir/Anduril consortia">産業連携（SpaceX/Palantir/Anduril等）への位置付け</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot muted small">
+    <span data-ja="UIは添付のダッシュボード例に準拠" data-en="UI aligns with attached dashboard example">UIは添付のダッシュボード例に準拠</span> • <span>© 2025</span>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5)">
+  <div id="modal-card" style="background:#fff;max-width:720px;width:92%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e2e8f0">
+      <div id="modal-title" style="font-weight:800"></div>
+      <button class="btn" onclick="closeModal()">×</button>
+    </div>
+    <div id="modal-body" style="padding:16px;max-height:70vh;overflow:auto"></div>
+  </div>
+</div>
+
+<script>
+const data = {
+  systems: [
+    {
+      id:"lrdr", type:"Sensor", domain:"Ground", name:"LRDR (Long Range Discrimination Radar)",
+      desc: {
+        ja:"アラスカ・クリア宇宙軍基地の大型X帯域レーダー。ICBM識別・追尾。2025-06-23の試験でICBM代表目標を追尾・C2BMCに報告。",
+        en:"Large S-band radar at Clear SFS, Alaska. ICBM discrimination/track. Tracked an ICBM-representative target on 2025-06-23 and reported to C2BMC."
+      },
+      role:["ICBM","HGV (tracking)"],
+      notes:"DVIDS FTX-26a 2025-06-23"
+    },
+    {
+      id:"hbtss", type:"Sensor", domain:"Space", name:"HBTSS + SDA Tracking Layer",
+      desc: {
+        ja:"機上赤外によりHGVを含む目標の継続追尾・ハンドオフを実現する宇宙配備センサー群。",
+        en:"Space-based IR sensors to maintain custody of HGV and handoff to shooters."
+      },
+      role:["HGV","Cruise"],
+      notes:"SDA/CRS 2025"
+    },
+    {
+      id:"sbx", type:"Sensor", domain:"Sea", name:"SBX (Sea-Based X-band)",
+      desc: {
+        ja:"洋上X帯域レーダー。目標識別・試験支援。",
+        en:"Sea-based X-band radar for discrimination and test support."
+      },
+      role:["ICBM"],
+      notes:"MDA"
+    },
+    {
+      id:"c2bmc", type:"C2", domain:"C2", name:"C2BMC (Command & Control, Battle Management & Communications)",
+      desc: {
+        ja:"BMDSの中枢C2。LRDR等のセンサ情報統合・交戦管理。将来はAI支援を検討。",
+        en:"Core BMDS C2. Fuses sensors (e.g., LRDR), manages engagement; future AI support under study."
+      },
+      role:["All"],
+      notes:"DoD"
+    },
+    {
+      id:"gmd", type:"Shooter", domain:"Ground", name:"GMD / NGI",
+      desc: {
+        ja:"本土防空の中核。NGIで性能更新、2028頃IOC目標。ミサイル田（拡張）検討。",
+        en:"Homeland midcourse core. NGI to modernize; IOC around 2028; additional missile field under study."
+      },
+      role:["ICBM"],
+      notes:"GAO/Reuters 2025-08"
+    },
+    {
+      id:"sm3", type:"Shooter", domain:"Sea/Land", name:"Aegis / SM-3 Block IIA",
+      desc: {
+        ja:"2020年にICBM級目標への迎撃試験（FTM-44）。中間層での寄与。",
+        en:"Intercepted an ICBM-class target in 2020 (FTM-44); contributes to midcourse layer."
+      },
+      role:["IRBM","ICBM (limited)"],
+      notes:"DoD 2020 / CRS"
+    },
+    {
+      id:"thaad", type:"Shooter", domain:"Ground", name:"THAAD",
+      desc: {
+        ja:"高高度ターミナル防衛。PAC-3 MSEと同一火力単位での統合運用実証。",
+        en:"High-altitude terminal defense. Demonstrated integrated operation with PAC-3 MSE."
+      },
+      role:["SRBM","MRBM","HGV (terminal)"],
+      notes:"Lockheed 2022 demo"
+    },
+    {
+      id:"pac3mse", type:"Shooter", domain:"Ground", name:"Patriot PAC-3 MSE",
+      desc: {
+        ja:"点防御ターミナル。高機動・高精度。",
+        en:"Point-defense terminal. Highly agile & precise."
+      },
+      role:["SRBM","Cruise","UAV"],
+      notes:"Army/Lockheed"
+    },
+    {
+      id:"sm6", type:"Shooter", domain:"Sea", name:"SM-6 (Sea-Based Terminal)",
+      desc: {
+        ja:"多用途。終末段階の弾道弾/一部極超音速に対処可能と評価。",
+        en:"Multi-mission; terminal BMD with limited counter-hypersonic capability."
+      },
+      role:["SRBM","Cruise","HGV (terminal)"],
+      notes:"CSIS/DOT&E/Naval News"
+    },
+    {
+      id:"gpi", type:"Shooter", domain:"Sea", name:"GPI (Glide Phase Interceptor)",
+      desc: {
+        ja:"HGVのグライド段階での迎撃。資金減で約3年の遅延見通し。",
+        en:"Defeat HGV in glide phase; facing ~3-year delay due to reduced funding."
+      },
+      role:["HGV"],
+      notes:"DefenseNews 2025-05"
+    }
+  ],
+  threats: [
+    { name:"ICBM", systems:["lrdr","gmd","sm3","c2bmc"] },
+    { name:"Hypersonic Glide Vehicle (HGV)", systems:["lrdr","hbtss","sm6","gpi","c2bmc"] },
+    { name:"Cruise Missile", systems:["hbtss","sm6","pac3mse","c2bmc"] },
+    { name:"SRBM/MRBM", systems:["thaad","pac3mse","sm6","c2bmc"] },
+    { name:"UAS/Drone Swarm", systems:["pac3mse","c2bmc"] }
+  ],
+  milestones: [
+    { date:"2025-01-27", title:"EO 14186 サイン / EO signed", ref:"DoD release" },
+    { date:"2025-05-20", title:"国防長官声明 / SecDef statement", ref:"DoD release" },
+    { date:"2025-06-23", title:"LRDR FTX-26a 追尾成功 / LRDR FTX-26a tracking success", ref:"DVIDS" },
+    { date:"2025-07-10", title:"25B$成立（CRS）/ $25B enacted (CRS)", ref:"CRS IN12576" },
+    { date:"2025-07-22", title:"GDA直轄PMにGuetlein将 / Gen. Guetlein named", ref:"DoD release" },
+    { date:"2025-08-05", title:"Lockheed C2ハブ発表 / Lockheed C2 hub announced", ref:"DefenseNews" },
+    { date:"2025-08-07", title:"Industry Summit (Huntsville)", ref:"SAM.gov" },
+    { date:"2025-08-12", title:"4層アーキ図示 / Four-layer slides", ref:"Reuters" },
+    { date:"2025-08-19", title:"Northrop EPIC施設稼働 / Northrop EPIC opens", ref:"Axios" }
+  ],
+  industry: [
+    { name:"Lockheed Martin", role:["THAAD","PAC-3 MSE","NGI prime","C2 prototype"], notes:"FRP SM-3 partner RTX; C2 hub (2025-08-05)" },
+    { name:"RTX (Raytheon)", role:["SM-3 IIA prime","SM-6 family"], notes:"SM-3 IIA full-rate production (2024-10-15)" },
+    { name:"Boeing", role:["GMD prime","silos expansion"], notes:"GMD integration/sustainment; Ft. Greely silos" },
+    { name:"Northrop Grumman", role:["GPI","IBCS","EPIC factory"], notes:"Sole on GPI OTA; new EPIC facility (2025-08-19)" },
+    { name:"L3Harris", role:["SDA Tracking Layer"], notes:"SDA T2 Tracking award (2024-01-16)" },
+    { name:"SpaceX / Palantir / Anduril", role:["Space sensing/custody, C2/AI"], notes:"Consortium interest reported (Reuters 2025-04)" }
+  ]
+};
+
+// Build systems grid
+function el(tag, attrs={}, inner="") {
+  const e = document.createElement(tag);
+  Object.entries(attrs).forEach(([k,v])=> e.setAttribute(k,v));
+  if(inner) e.innerHTML = inner;
+  return e;
+}
+
+function buildSystems() {
+  const grid = document.getElementById('sys-grid');
+  grid.innerHTML = "";
+  data.systems.forEach(s => {
+    const c = el('div', {class:'card', 'data-name': s.name.toLowerCase() + ' ' + s.type.toLowerCase() + ' ' + s.domain.toLowerCase()});
+    c.onclick = () => openSystem(s);
+    c.innerHTML = `
+      <h3>${s.name} <span class="pill">${s.type}</span> <span class="pill">${s.domain}</span></h3>
+      <div class="muted small">${s.notes || ""}</div>
+      <div class="tagbar">${s.role.map(r=>`<span class='tag'>${r}</span>`).join('')}</div>
+      <p class="small" data-ja="${s.desc.ja}" data-en="${s.desc.en}">${s.desc.ja}</p>
+    `;
+    grid.appendChild(c);
+  });
+}
+
+function filterCards(q) {
+  document.querySelectorAll('#sys-grid .card').forEach(card=> {
+    const text = card.getAttribute('data-name');
+    card.style.display = (!q || text.includes(q.toLowerCase())) ? '' : 'none';
+  });
+}
+
+// Build threats matrix
+function buildMatrix() {
+  const table = document.getElementById('matrix');
+  const heads = ['Threat'].concat(data.systems.map(s=>s.name));
+  table.innerHTML = '';
+  const trh = el('tr'); heads.forEach(h => trh.appendChild(el('th', {}, h))); table.appendChild(trh);
+  data.threats.forEach(t => {
+    const tr = el('tr');
+    tr.appendChild(el('td', {}, t.name));
+    data.systems.forEach(s => {
+      const covered = t.systems.includes(s.id);
+      tr.appendChild(el('td', {}, covered ? '✔︎' : '—'));
+    });
+    table.appendChild(tr);
+  });
+}
+
+// Build timeline
+function buildTimeline() {
+  const t = document.getElementById('timeline');
+  t.innerHTML = '';
+  data.milestones.forEach(m => {
+    const e = el('div', {class:'event'},
+      `<div><span class="date">${m.date}</span> ${m.title} <span class="muted">• ${m.ref}</span></div>`);
+    t.appendChild(e);
+  });
+}
+
+// Industry grid
+function buildIndustry() {
+  const g = document.getElementById('ind-grid');
+  g.innerHTML = '';
+  data.industry.forEach(x=> {
+    const c = el('div', {class:'card'});
+    c.innerHTML = `<h3>${x.name}</h3>
+      <div class="tagbar">${x.role.map(r=>`<span class='tag'>${r}</span>`).join('')}</div>
+      <p class="small muted">${x.notes || ''}</p>`;
+    g.appendChild(c);
+  });
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('active', t.getAttribute('data-tab')===id));
+  document.querySelectorAll('.panel').forEach(p=> p.style.display = (p.id===id)?'block':'none');
+}
+
+function openModal(key) {
+  const titleMap = {
+    funding: { ja:"💵 25B$ 初期資金（CRS IN12576）", en:"💵 $25B Initial Funding (CRS IN12576)"},
+    layers:  { ja:"🧩 4層アーキテクチャ（2025-08）", en:"🧩 4-Layer Architecture (Aug 2025)"},
+    leader:  { ja:"👤 Golden Dome 直轄PM", en:"👤 Golden Dome Direct-Report PM"},
+    lrdr:    { ja:"📡 LRDR 近況", en:"📡 LRDR Status"},
+    eo:      { ja:"📜 行政命令 14186", en:"📜 Executive Order 14186"},
+    concept: { ja:"🧩 コンセプト詳細", en:"🧩 Concept Details"}
+  }[key] || { ja:"詳細", en:"Details" };
+
+  const bodyMap = {
+    funding: {
+      ja:"2025年和解法（CRS IN12576）で25B$。内訳は『次世代MD』18.8B$、『層状国土防衛』5.9B$。",
+      en:"The 2025 reconciliation law (CRS IN12576) appropriates $25B: $18.8B for 'next-generation MD' and $5.9B for 'layered homeland defense'."
+    },
+    layers: {
+      ja:"国防総省説明スライド（2025-08）では『衛星ベース×1』『地上×3』の4層で検討。新たなNGIミサイル田も評価対象。",
+      en:"DoD briefing slides (Aug 2025) describe a four-layer construct: one space-based, three ground-based layers; a new NGI missile field is under study."
+    },
+    leader: {
+      ja:"2025-07-22、Guetlein将がGolden Dome直轄PMに就任（DoDリリース）。",
+      en:"On 2025-07-22, Gen. Guetlein was confirmed as the Golden Dome Direct-Report PM (DoD release)."
+    },
+    lrdr: {
+      ja:"2025-06-23、LRDRはICBM代表目標の追尾に成功しC2BMCへデータ連接（DVIDS）。",
+      en:"On 2025-06-23, LRDR tracked an ICBM-representative target and reported data to C2BMC (DVIDS)."
+    },
+    eo: {
+      ja:"2025-01-27のEO 14186でGolden Domeを公式化し、全ドメイン統合MDを指示。",
+      en:"EO 14186 (2025-01-27) formalized Golden Dome and directed all-domain integrated MD."
+    },
+    concept: {
+      ja:"既存のGMD/SM-3/THAAD/PAC-3を梃入れしつつ、SDA/HBTSS等の宇宙追尾層とC2BMC中枢を強化。将来の宇宙迎撃の可否は検証中。",
+      en:"Bolster existing GMD/SM-3/THAAD/PAC-3 while expanding the SDA/HBTSS space-tracking layer and strengthening C2BMC as the core. Feasibility of space-based intercept remains under evaluation."
+    }
+  }[key] || { ja:"", en:"" };
+
+  document.getElementById('modal-title').innerText = (currentLang==='ja')? titleMap.ja : titleMap.en;
+  document.getElementById('modal-body').innerText = (currentLang==='ja')? bodyMap.ja : bodyMap.en;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function openSystem(s) {
+  const title = s.name + " — " + s.type + " / " + s.domain;
+  const body = (currentLang==='ja')? s.desc.ja : s.desc.en;
+  document.getElementById('modal-title').innerText = title;
+  document.getElementById('modal-body').innerHTML = `
+    <p>${body}</p>
+    <div class='tagbar'>${s.role.map(r=>`<span class='tag'>${r}</span>`).join('')}</div>
+    <div class='inline-note muted'>${s.notes||""}</div>
+  `;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modal').style.display='none'; }
+
+let currentLang = 'ja';
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-ja').classList.toggle('active', lang==='ja');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.querySelectorAll('[data-ja]').forEach(el=> {
+    const txt = el.getAttribute(lang==='ja' ? 'data-ja' : 'data-en');
+    if(txt) el.textContent = txt;
+  });
+}
+
+buildSystems();
+buildMatrix();
+buildTimeline();
+buildIndustry();
+</script>
+</body>
+</html>

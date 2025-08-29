@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年6月16日 イラン・イスラエル対立構造分析</title>
+    
+    <!-- 言語メタデータ -->
+    <meta name="article:languages" content="ja">
+    <meta name="title:ja" content="2025年6月16日 イラン・イスラエル対立構造分析">
+    <meta name="title:en" content="June 16, 2025 - Iran-Israel Conflict Structure Analysis">
+    <meta name="description:ja" content="イラン・イスラエル対立の三層構造、歴史的経緯、最新状況、国際反応、シナリオ分析を包括的にダッシュボード形式で表示">
+    <meta name="description:en" content="Comprehensive dashboard analysis of Iran-Israel conflict structure, historical background, latest situation, international responses, and scenario analysis">
+    <meta name="author" content="Defense Intelligence Portal">
+    <meta name="category" content="国際情勢">
+    <meta name="tags" content="イラン,イスラエル,中東情勢,安全保障,核開発,代理戦争")
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            color: #1f2937;
+        }
+
+        /* タブナビゲーション */
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            background: #f3f4f6;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .tab-button:hover {
+            background: #e5e7eb;
+        }
+
+        .tab-button.active {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* コンテンツエリア */
+        .tab-content {
+            min-height: 500px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 概要タブ */
+        .actors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .actor-card {
+            padding: 24px;
+            border-radius: 8px;
+            border: 2px solid;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .actor-card:hover {
+            transform: scale(1.05);
+        }
+
+        .actor-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .actor-card .section {
+            margin-bottom: 12px;
+        }
+
+        .actor-card .label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .capability {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            margin-bottom: 4px;
+        }
+
+        .capability-icon {
+            width: 12px;
+            height: 12px;
+            margin-right: 4px;
+        }
+
+        /* 三層構造 */
+        .layers-box {
+            background: #f9fafb;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .layer-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .layer-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        /* タイムライン */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 32px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #d1d5db;
+        }
+
+        .timeline-event {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            cursor: pointer;
+        }
+
+        .timeline-year {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 10;
+            transition: transform 0.3s;
+            margin-left: -8px;
+        }
+
+        .timeline-event:hover .timeline-year {
+            transform: scale(1.1);
+        }
+
+        .timeline-content {
+            margin-left: 24px;
+            flex: 1;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .timeline-detail {
+            margin-top: 8px;
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        /* 最新状況 */
+        .alert-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .alert-box h4 {
+            color: #991b1b;
+            margin-bottom: 8px;
+        }
+
+        .damage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .damage-card {
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .damage-card h4 {
+            margin-bottom: 8px;
+        }
+
+        .damage-card ul {
+            list-style: none;
+            font-size: 0.875rem;
+        }
+
+        .damage-card li {
+            margin-bottom: 4px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .damage-card li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+
+        /* 国際反応 */
+        .support-section {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .support-section h4 {
+            font-size: 1.125rem;
+            margin-bottom: 16px;
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .country-card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+        }
+
+        .country-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .country-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .country-flag {
+            font-size: 1.5rem;
+            margin-right: 8px;
+        }
+
+        .country-stance {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        /* シナリオ分析 */
+        .scenario-card {
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scenario-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .scenario-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .scenario-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .probability-badge {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .scenario-details {
+            margin-top: 16px;
+            padding: 24px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            display: none;
+        }
+
+        .scenario-details.active {
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section h5 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .detail-section h5 svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        .process-step {
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .process-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .process-phase {
+            font-weight: 600;
+        }
+
+        .process-duration {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .actor-action {
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .actor-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .actor-description {
+            font-size: 0.875rem;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+
+        /* フッター */
+        .footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 640px) {
+            .tab-button span {
+                display: none;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .main-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-card">
+            <h1>イラン・イスラエル対立構造分析 (2025年6月16日時点)</h1>
+            
+            <!-- タブナビゲーション -->
+            <div class="tab-nav">
+                <button class="tab-button active" onclick="switchTab('overview', this)">
+                    <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <span>概要</span>
+                </button>
+                <button class="tab-button" onclick="switchTab('timeline', this)">
+                    <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>タイムライン</span>
+                </button>
+                <button class="tab-button" onclick="switchTab('current', this)">
+                    <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span>最新状況</span>
+                </button>
+                <button class="tab-button" onclick="switchTab('international', this)">
+                    <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span>国際反応</span>
+                </button>
+                <button class="tab-button" onclick="switchTab('scenarios', this)">
+                    <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <span>シナリオ分析</span>
+                </button>
+            </div>
+            
+            <!-- コンテンツエリア -->
+            <div id="overview" class="tab-content active">
+                <!-- 概要タブの内容 -->
+                <div class="actors-grid">
+                    <div class="actor-card" style="border-color: #10b981; background-color: rgba(16, 185, 129, 0.05);">
+                        <h3 style="color: #10b981;">イラン</h3>
+                        <div class="section">
+                            <p class="label">代理勢力:</p>
+                            <div class="tags">
+                                <span class="tag">ヒズボラ</span>
+                                <span class="tag">ハマス</span>
+                                <span class="tag">フーシ派</span>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <p class="label">主要能力:</p>
+                            <div class="capability">
+                                <svg class="capability-icon" fill="#10b981" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                弾道ミサイル
+                            </div>
+                            <div class="capability">
+                                <svg class="capability-icon" fill="#10b981" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                無人機
+                            </div>
+                            <div class="capability">
+                                <svg class="capability-icon" fill="#10b981" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                核開発能力
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="actor-card" style="border-color: #3b82f6; background-color: rgba(59, 130, 246, 0.05);">
+                        <h3 style="color: #3b82f6;">イスラエル</h3>
+                        <div class="section">
+                            <p class="label">同盟国:</p>
+                            <div class="tags">
+                                <span class="tag">米国</span>
+                                <span class="tag">英国</span>
+                                <span class="tag">フランス</span>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <p class="label">主要能力:</p>
+                            <div class="capability">
+                                <svg class="capability-icon" fill="#3b82f6" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                空軍力
+                            </div>
+                            <div class="capability">
+                                <svg class="capability-icon" fill="#3b82f6" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                ミサイル防衛
+                            </div>
+                            <div class="capability">
+                                <svg class="capability-icon" fill="#3b82f6" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                核保有（未公表）
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="layers-box">
+                    <h3 style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <svg style="width: 20px; height: 20px; margin-right: 8px; color: #ef4444;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        対立の三層構造
+                    </h3>
+                    <div class="layer-item">
+                        <div class="layer-number" style="background-color: #ef4444;">1</div>
+                        <div>
+                            <h4 style="font-weight: 600;">体制・イデオロギー対立</h4>
+                            <p style="font-size: 0.875rem; color: #6b7280;">1979年革命以降の「反シオニズム」国是化</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-number" style="background-color: #f97316;">2</div>
+                        <div>
+                            <h4 style="font-weight: 600;">核開発と安全保障ジレンマ</h4>
+                            <p style="font-size: 0.875rem; color: #6b7280;">イスラエルの核独占 vs イランの核開発意図</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-number" style="background-color: #eab308;">3</div>
+                        <div>
+                            <h4 style="font-weight: 600;">代理勢力による「影の戦争」</h4>
+                            <p style="font-size: 0.875rem; color: #6b7280;">レバノン・シリア・イラク・イエメンでの間接衝突</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="timeline" class="tab-content">
+                <!-- タイムラインタブの内容 -->
+                <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 16px;">歴史的経緯</h3>
+                <div class="timeline">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-event" onclick="toggleTimelineDetail(0)">
+                        <div class="timeline-year" style="background-color: #9333ea;">1979</div>
+                        <div class="timeline-content">
+                            <h4>イラン革命</h4>
+                            <p style="color: #6b7280;">王政崩壊、反シオニズム体制確立</p>
+                            <div id="timeline-detail-0" class="timeline-detail">
+                                詳細情報がここに表示されます...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-event" onclick="toggleTimelineDetail(1)">
+                        <div class="timeline-year" style="background-color: #f97316;">2023</div>
+                        <div class="timeline-content">
+                            <h4>ガザ戦争</h4>
+                            <p style="color: #6b7280;">ハマス奇襲、地域全体へ波及</p>
+                            <div id="timeline-detail-1" class="timeline-detail">
+                                詳細情報がここに表示されます...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-event" onclick="toggleTimelineDetail(2)">
+                        <div class="timeline-year" style="background-color: #dc2626;">2024</div>
+                        <div class="timeline-content">
+                            <h4>初の直接攻撃</h4>
+                            <p style="color: #6b7280;">イランが170機超の無人機・ミサイル発射</p>
+                            <div id="timeline-detail-2" class="timeline-detail">
+                                詳細情報がここに表示されます...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-event" onclick="toggleTimelineDetail(3)">
+                        <div class="timeline-year" style="background-color: #7f1d1d;">2025</div>
+                        <div class="timeline-content">
+                            <h4>6月危機</h4>
+                            <p style="color: #6b7280;">相互報復攻撃、全面戦争の瀬戸際</p>
+                            <div id="timeline-detail-3" class="timeline-detail">
+                                詳細情報がここに表示されます...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="current" class="tab-content">
+                <!-- 最新状況タブの内容 -->
+                <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 16px;">2025年6月 最新状況</h3>
+                
+                <div class="alert-box">
+                    <h4>最新の攻撃状況</h4>
+                    <div style="font-size: 0.875rem;">
+                        <div style="display: flex; align-items: start; margin-bottom: 8px;">
+                            <svg style="width: 16px; height: 16px; margin-right: 8px; margin-top: 2px; color: #dc2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <div>
+                                <strong>6月13日:</strong> イスラエルがテヘラン・ナタンズ・イスファハーン約100目標を同時攻撃
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <svg style="width: 16px; height: 16px; margin-right: 8px; margin-top: 2px; color: #dc2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <div>
+                                <strong>6月14-15日:</strong> イランが数百発規模の弾道ミサイル・無人機で報復攻撃
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="damage-grid">
+                    <div class="damage-card" style="background-color: #eff6ff;">
+                        <h4 style="color: #1e40af;">イスラエル側被害</h4>
+                        <ul>
+                            <li>テルアビブ南郊バトヤム直撃</li>
+                            <li>北部ハイファ、ガリラヤ地方被弾</li>
+                            <li>死傷者多数（詳細未公表）</li>
+                        </ul>
+                    </div>
+                    <div class="damage-card" style="background-color: #f0fdf4;">
+                        <h4 style="color: #166534;">イラン側被害</h4>
+                        <ul>
+                            <li>IRGC情報部門長カゼミ少将死亡</li>
+                            <li>核科学者14名死亡</li>
+                            <li>核・軍事施設に大規模損害</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="background-color: #e0e7ff; padding: 16px; border-radius: 8px;">
+                    <h4 style="margin-bottom: 8px; display: flex; align-items: center;">
+                        <svg style="width: 20px; height: 20px; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        国際社会の対応
+                    </h4>
+                    <ul style="font-size: 0.875rem; list-style: none;">
+                        <li style="margin-bottom: 8px;">• 米国：イージス駆逐艦2隻と空母「カール・ヴィンソン」を東地中海に展開</li>
+                        <li style="margin-bottom: 8px;">• G7：カナダ開催の首脳会議で「即時停戦と核拡散防止」を最優先議題化</li>
+                        <li>• 国連：安保理緊急会合を招集、即時停戦決議を審議中</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="international" class="tab-content">
+                <!-- 国際反応タブの内容 -->
+                <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 16px;">各国の反応と支援状況</h3>
+                
+                <div class="support-section" style="background-color: #eff6ff;">
+                    <h4 style="color: #1e40af;">イスラエル支援国</h4>
+                    <div class="country-grid">
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇺🇸</span>
+                                <h5>米国</h5>
+                            </div>
+                            <p class="country-stance">"イスラエルの自衛権を全面支持"</p>
+                            <div style="font-size: 0.875rem;">
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    イージス駆逐艦2隻派遣
+                                </div>
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    空母カール・ヴィンソン展開
+                                </div>
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    ミサイル防衛支援
+                                </div>
+                                <div style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    情報共有
+                                </div>
+                            </div>
+                        </div>
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇬🇧</span>
+                                <h5>英国</h5>
+                            </div>
+                            <p class="country-stance">"イスラエルの安全保障を支援"</p>
+                            <div style="font-size: 0.875rem;">
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    迎撃支援
+                                </div>
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    情報提供
+                                </div>
+                                <div style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #2563eb; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    外交的支持
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="support-section" style="background-color: #f0fdf4;">
+                    <h4 style="color: #166534;">イラン支援国</h4>
+                    <div class="country-grid">
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇷🇺</span>
+                                <h5>ロシア</h5>
+                            </div>
+                            <p class="country-stance">"イランの主権を尊重、米国の介入を批判"</p>
+                            <div style="font-size: 0.875rem;">
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #16a34a; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    外交的支援
+                                </div>
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #16a34a; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    国連での擁護
+                                </div>
+                                <div style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #16a34a; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    軍事技術協力
+                                </div>
+                            </div>
+                        </div>
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇨🇳</span>
+                                <h5>中国</h5>
+                            </div>
+                            <p class="country-stance">"対話による解決を主張、米国の一方的制裁に反対"</p>
+                            <div style="font-size: 0.875rem;">
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #16a34a; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    経済関係維持
+                                </div>
+                                <div style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #16a34a; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    外交的後ろ盾
+                                </div>
+                                <div style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #16a34a; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    制裁回避支援
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="support-section" style="background-color: #f5f3ff;">
+                    <h4 style="color: #6b21a8;">仲介国</h4>
+                    <div class="country-grid">
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇶🇦</span>
+                                <h5>カタール</h5>
+                            </div>
+                            <p style="font-size: 0.875rem; font-weight: 500; color: #7c3aed; margin-bottom: 8px;">両国との外交チャンネル維持</p>
+                            <ul style="font-size: 0.875rem; list-style: none;">
+                                <li style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    停戦協議の仲介
+                                </li>
+                                <li style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    人質交渉
+                                </li>
+                                <li style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    人道回廊設置
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇴🇲</span>
+                                <h5>オマーン</h5>
+                            </div>
+                            <p style="font-size: 0.875rem; font-weight: 500; color: #7c3aed; margin-bottom: 8px;">伝統的な中立的仲介者</p>
+                            <ul style="font-size: 0.875rem; list-style: none;">
+                                <li style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    秘密交渉の場を提供
+                                </li>
+                                <li style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    メッセージ伝達
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="country-card">
+                            <div class="country-header">
+                                <span class="country-flag">🇹🇷</span>
+                                <h5>トルコ</h5>
+                            </div>
+                            <p style="font-size: 0.875rem; font-weight: 500; color: #7c3aed; margin-bottom: 8px;">地域大国として仲介を模索</p>
+                            <ul style="font-size: 0.875rem; list-style: none;">
+                                <li style="display: flex; align-items: start; margin-bottom: 4px;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    両国への自制要請
+                                </li>
+                                <li style="display: flex; align-items: start;">
+                                    <svg style="width: 12px; height: 12px; margin-right: 4px; margin-top: 2px; color: #7c3aed; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    人道支援提供
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="scenarios" class="tab-content">
+                <!-- シナリオ分析タブの内容 -->
+                <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 16px;">今後のシナリオ分析</h3>
+                
+                <div class="scenario-card" style="border-color: #10b981;" onclick="toggleScenario('ceasefire')">
+                    <div class="scenario-header">
+                        <div class="scenario-title">
+                            <div class="scenario-icon" style="background-color: rgba(16, 185, 129, 0.2);">
+                                <svg style="width: 20px; height: 20px; color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 1.125rem; font-weight: bold;">限定的停戦</h4>
+                        </div>
+                        <span class="probability-badge" style="background-color: #10b981;">可能性: 低</span>
+                    </div>
+                    <p style="color: #4b5563;">仲介国を通じた段階的停戦合意</p>
+                    <div style="margin-top: 12px; display: flex; align-items: center; font-size: 0.875rem; color: #6b7280;">
+                        <svg id="arrow-ceasefire" style="width: 16px; height: 16px; margin-right: 4px; transition: transform 0.3s;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        詳細な分析を見る
+                    </div>
+                </div>
+                
+                <div id="details-ceasefire" class="scenario-details">
+                    <div class="details-grid">
+                        <div class="detail-section">
+                            <h5>
+                                <svg style="color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                発生の前提条件
+                            </h5>
+                            <ul style="list-style: none;">
+                                <li style="display: flex; align-items: start; font-size: 0.875rem; margin-bottom: 8px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #10b981; margin-right: 8px; margin-top: 6px; flex-shrink: 0;"></span>
+                                    両国指導部の政治的意思
+                                </li>
+                                <li style="display: flex; align-items: start; font-size: 0.875rem; margin-bottom: 8px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #10b981; margin-right: 8px; margin-top: 6px; flex-shrink: 0;"></span>
+                                    国際社会からの強力な圧力
+                                </li>
+                                <li style="display: flex; align-items: start; font-size: 0.875rem; margin-bottom: 8px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #10b981; margin-right: 8px; margin-top: 6px; flex-shrink: 0;"></span>
+                                    軍事的膠着状態の認識
+                                </li>
+                                <li style="display: flex; align-items: start; font-size: 0.875rem;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #10b981; margin-right: 8px; margin-top: 6px; flex-shrink: 0;"></span>
+                                    国内世論の戦争疲れ
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h5>
+                                <svg style="color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                展開プロセス
+                            </h5>
+                            <div class="process-step">
+                                <div class="process-header">
+                                    <span class="process-phase">第1段階</span>
+                                    <span class="process-duration">1-2週間</span>
+                                </div>
+                                <p style="color: #6b7280;">カタール・オマーンを通じた秘密接触開始</p>
+                            </div>
+                            <div class="process-step">
+                                <div class="process-header">
+                                    <span class="process-phase">第2段階</span>
+                                    <span class="process-duration">数日</span>
+                                </div>
+                                <p style="color: #6b7280;">48-72時間の人道的停戦合意</p>
+                            </div>
+                            <div class="process-step">
+                                <div class="process-header">
+                                    <span class="process-phase">第3段階</span>
+                                    <span class="process-duration">2-4週間</span>
+                                </div>
+                                <p style="color: #6b7280;">段階的な敵対行為停止</p>
+                            </div>
+                            <div class="process-step">
+                                <div class="process-header">
+                                    <span class="process-phase">第4段階</span>
+                                    <span class="process-duration">数ヶ月</span>
+                                </div>
+                                <p style="color: #6b7280;">長期停戦協定の交渉</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; margin-top: 24px;">
+                    <h4 style="font-weight: bold; margin-bottom: 12px; display: flex; align-items: center;">
+                        <svg style="width: 20px; height: 20px; margin-right: 8px; color: #d97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        衝突長期化の構造的要因
+                    </h4>
+                    <ol style="font-size: 0.875rem;">
+                        <li style="margin-bottom: 8px;"><strong>1.</strong> 核開発の時間軸と抑止戦略の衝突</li>
+                        <li style="margin-bottom: 8px;"><strong>2.</strong> 代理勢力依存による境界希薄化</li>
+                        <li><strong>3.</strong> 国内政治要因（両国とも強硬派が優勢）</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>※ 2025年6月16日時点の情報に基づく分析</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // タブ切り替え
+        function switchTab(tabId, buttonElement) {
+            // すべてのタブコンテンツを非表示
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // すべてのタブボタンから active クラスを削除
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // 選択されたタブを表示
+            document.getElementById(tabId).classList.add('active');
+            
+            // クリックされたボタンに active クラスを追加
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+            }
+        }
+        
+        // タイムライン詳細の表示/非表示
+        function toggleTimelineDetail(index) {
+            const detail = document.getElementById('timeline-detail-' + index);
+            detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // シナリオ詳細の表示/非表示
+        function toggleScenario(scenarioId) {
+            const details = document.getElementById('details-' + scenarioId);
+            const arrow = document.getElementById('arrow-' + scenarioId);
+            
+            if (details.classList.contains('active')) {
+                details.classList.remove('active');
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                // 他のシナリオを閉じる
+                document.querySelectorAll('.scenario-details').forEach(d => {
+                    d.classList.remove('active');
+                });
+                document.querySelectorAll('[id^="arrow-"]').forEach(a => {
+                    a.style.transform = 'rotate(0deg)';
+                });
+                
+                // 選択されたシナリオを開く
+                details.classList.add('active');
+                arrow.style.transform = 'rotate(90deg)';
+            }
+        }
+        
+        // アクターカードのホバー効果
+        const actorCards = document.querySelectorAll('.actor-card');
+        actorCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const borderColor = this.style.borderColor;
+                const rgb = borderColor.match(/\d+/g);
+                if (rgb) {
+                    this.style.backgroundColor = 'rgba(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ', 0.1)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const borderColor = this.style.borderColor;
+                const rgb = borderColor.match(/\d+/g);
+                if (rgb) {
+                    this.style.backgroundColor = 'rgba(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ', 0.05)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

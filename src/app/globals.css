@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 日本語フォント設定 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap');
+
+/* 基本スタイル設定 */
+body {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+  background-color: #ffffff;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* 記事コンテンツ用のスタイル（Tailwind prose使用） */
+.article-content {
+  @apply prose prose-lg max-w-none;
+}
+
+/* 記事表示コンテナ - 元HTMLの完全隔離 */
+.article-display-container {
+  /* Tailwindリセットと隔離 */
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  
+  /* 記事内容の境界設定 */
+  overflow: visible;
+  contain: layout style paint;
+}
+
+/* 元記事の隔離コンテナ */
+.article-display-container .article-isolated-container {
+  /* 完全隔離 */
+  all: initial !important;
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  
+  /* CSS隔離強化 */
+  isolation: isolate;
+  contain: layout style paint;
+}
+
+/* 元HTMLコンテンツラッパー */
+.article-display-container .original-content-wrapper {
+  /* 元のHTML構造を維持 */
+  all: initial !important;
+  display: block !important;
+  position: relative !important;
+}
+
+/* Tailwindクラス無効化 */
+.article-display-container [class^="text-"],
+.article-display-container [class^="bg-"],
+.article-display-container [class^="p-"],
+.article-display-container [class^="m-"],
+.article-display-container [class^="w-"],
+.article-display-container [class^="h-"],
+.article-display-container [class^="flex"],
+.article-display-container [class^="grid"],
+.article-display-container [class*="prose"] {
+  all: unset !important;
+}
+
+/* 元のHTMLデザインを保持する記事コンテンツ用（レガシー） */
+.article-original-content {
+  /* スタイルの分離 */
+  position: relative;
+  width: 100%;
+  /* 元のHTMLスタイルをそのまま表示 */
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 元のHTMLラッパー（元のスタイルをそのまま適用） */
+.article-original-content .original-article-wrapper {
+  /* 元のHTMLのスタイルをそのまま使用 */
+  position: relative;
+}
+
+.article-content h1 {
+  @apply text-3xl font-bold mb-6 text-gray-900;
+}
+
+.article-content h2 {
+  @apply text-2xl font-semibold mb-4 mt-8 text-gray-800;
+}
+
+.article-content h3 {
+  @apply text-xl font-semibold mb-3 mt-6 text-gray-800;
+}
+
+.article-content p {
+  @apply mb-4 text-gray-700;
+}
+
+.article-content ul, .article-content ol {
+  @apply mb-4 pl-6;
+}
+
+.article-content li {
+  @apply mb-2 text-gray-700;
+}
+
+/* 記事内のテーブルスタイル */
+.article-content table {
+  @apply w-full border-collapse mb-6;
+}
+
+.article-content th {
+  @apply bg-gray-100 px-4 py-2 text-left font-semibold text-gray-800 border border-gray-300;
+}
+
+.article-content td {
+  @apply px-4 py-2 border border-gray-300;
+}
+
+/* 記事内のコードブロック */
+.article-content pre {
+  @apply bg-gray-100 rounded-lg p-4 overflow-x-auto mb-4;
+}
+
+.article-content code {
+  @apply bg-gray-100 px-1 py-0.5 rounded text-sm;
+}
+
+/* カード hover エフェクト */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* グラデーション背景 */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
+}
+
+/* ローディングアニメーション */
+.loading-pulse {
+  @apply animate-pulse bg-gray-300 rounded;
+}
+
+/* カスタムスクロールバー */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800 rounded-lg;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-600 rounded-lg;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-500;
+}

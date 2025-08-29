@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防衛省次世代情報通信戦略 / MOD Next-Generation ICT Strategy</title>
+    
+    <!-- 言語メタデータ -->
+    <meta name="article:languages" content="ja,en">
+    <meta name="title:ja" content="防衛省次世代情報通信戦略">
+    <meta name="title:en" content="MOD Next-Generation ICT Strategy">
+    <meta name="description:ja" content="防衛省の次世代情報通信戦略における5つの柱、セキュリティ要件、技術ロードマップをダッシュボード形式で包括分析">
+    <meta name="description:en" content="Comprehensive dashboard analysis of MOD's next-generation ICT strategy with five pillars, security requirements, and technology roadmap">
+    <meta name="author" content="Defense Intelligence Portal">
+    <meta name="category" content="防衛技術">
+    <meta name="tags" content="防衛省,ICT戦略,次世代技術,サイバーセキュリティ,情報通信")
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: white;
+            border-radius: 25px;
+            padding: 5px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 5px;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .header .date {
+            color: #888;
+            margin-top: 10px;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(238, 90, 111, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .key-message::before {
+            content: "🎯";
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3em;
+            opacity: 0.2;
+        }
+        
+        .key-message h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .approach-card .card-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .tech-card .card-icon { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .function-card .card-icon { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .support-card .card-icon { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        
+        .card h3 {
+            font-size: 1.3em;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .expand-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+        
+        .expand-btn:hover {
+            background: #764ba2;
+            transform: rotate(180deg);
+        }
+        
+        .card-content {
+            color: #555;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .card-content li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-content li:hover {
+            background: #f8f9fa;
+            margin-left: -25px;
+            padding-left: 50px;
+            border-radius: 5px;
+        }
+        
+        .card-content li::before {
+            content: "▸";
+            position: absolute;
+            left: 5px;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .detail-panel {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .detail-panel.active {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .timeline {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .timeline-item:hover {
+            background: #e9ecef;
+            transform: translateX(10px);
+        }
+        
+        .timeline-year {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .timeline-detail {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .timeline-detail.active {
+            display: block;
+        }
+        
+        .architecture {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .architecture h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        .layer {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .layer:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .layer:nth-child(odd) { border-left-color: #667eea; }
+        .layer:nth-child(even) { border-left-color: #f093fb; }
+        
+        .layer h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .layer-detail {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+            color: #666;
+        }
+        
+        .layer.expanded .layer-detail {
+            display: block;
+        }
+        
+        .tab-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 3px solid #e9ecef;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab:hover {
+            background: #e9ecef;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #667eea;
+        }
+        
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #ff6b6b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .highlight-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .highlight-detail {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+        
+        .highlight-box.expanded .highlight-detail {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .decision-cycle {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .cycle-step {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .cycle-step:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .cycle-step h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .cycle-step::after {
+            content: "→";
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #667eea;
+        }
+        
+        .cycle-step:last-child::after {
+            display: none;
+        }
+        
+        .capability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .capability-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .capability-item:hover {
+            border-color: #667eea;
+            background: white;
+            transform: translateY(-5px);
+        }
+        
+        .capability-item .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .tech-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .tech-detail-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .tech-detail-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .tech-detail-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tech-detail-card li {
+            padding: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-box .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-box .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        [lang="en"] {
+            display: none;
+        }
+        
+        .en [lang="ja"] {
+            display: none;
+        }
+        
+        .en [lang="en"] {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tab {
+                white-space: nowrap;
+                padding: 15px;
+            }
+            
+            .decision-cycle {
+                grid-template-columns: 1fr;
+            }
+            
+            .cycle-step::after {
+                display: none;
+            }
+            
+            .modal-content {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .language-toggle {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="language-toggle">
+            <button class="lang-btn active" onclick="setLanguage('ja')">日本語</button>
+            <button class="lang-btn" onclick="setLanguage('en')">English</button>
+        </div>
+        
+        <div class="header">
+            <h1>
+                <span lang="ja">防衛省次世代情報通信戦略</span>
+                <span lang="en">MOD Next-Generation Information and Communications Strategy</span>
+            </h1>
+            <p class="subtitle">
+                <span lang="ja">デジタル技術による防衛力の抜本的強化</span>
+                <span lang="en">Fundamental Enhancement of Defense Capabilities through Digital Technology</span>
+            </p>
+            <p class="date">
+                <span lang="ja">令和7年7月 防衛省</span>
+                <span lang="en">July 2025, Ministry of Defense</span>
+            </p>
+        </div>
+        
+        <div class="key-message">
+            <h2>
+                <span lang="ja">🎯 戦略の核心</span>
+                <span lang="en">🎯 Core Strategy</span>
+            </h2>
+            <p>
+                <span lang="ja">急速に進展する民間の次世代情報通信技術を積極的に取り込み、新たな戦い方に対応しつつ、国家防衛戦略で示された防衛力の抜本的強化を実現する。約27万人を擁する組織のスケールを活かし、防衛力強化と経済力強化の好循環を創出。</span>
+                <span lang="en">Actively incorporating rapidly advancing civilian next-generation ICT to adapt to new ways of warfare while achieving the fundamental strengthening of defense capabilities outlined in the National Defense Strategy. Leveraging the scale of our 270,000-person organization to create a virtuous cycle between defense and economic strengthening.</span>
+            </p>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="number">
+                    <span lang="ja">約27万人</span>
+                    <span lang="en">~270,000</span>
+                </div>
+                <div class="label">
+                    <span lang="ja">組織規模</span>
+                    <span lang="en">Organization Scale</span>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="number">2029</div>
+                <div class="label">
+                    <span lang="ja">新基盤運用目標</span>
+                    <span lang="en">New Infrastructure Target</span>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="number">3,000km</div>
+                <div class="label">
+                    <span lang="ja">東西南北の防衛領域</span>
+                    <span lang="en">Defense Area (Each Direction)</span>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="number">
+                    <span lang="ja">7つ</span>
+                    <span lang="en">7</span>
+                </div>
+                <div class="label">
+                    <span lang="ja">強化する機能・能力</span>
+                    <span lang="en">Enhanced Functions/Capabilities</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid-container">
+            <div class="card approach-card" onclick="toggleCardDetail(event, 'approach-detail')">
+                <button class="expand-btn" onclick="event.stopPropagation(); toggleDetail('approach-detail')">+</button>
+                <div class="card-header">
+                    <div class="card-icon">🎯</div>
+                    <h3>
+                        <span lang="ja">3つの戦略的アプローチ</span>
+                        <span lang="en">Three Strategic Approaches</span>
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li onclick="event.stopPropagation(); showModal('decision-superiority')">
+                            <strong>
+                                <span lang="ja">意思決定の優越</span>
+                                <span lang="en">Decision-Making Superiority</span>
+                            </strong>
+                            <span lang="ja">：AIとビッグデータで迅速・正確な判断</span>
+                            <span lang="en">: Rapid and accurate decisions through AI and big data</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('effect-web')">
+                            <strong>
+                                <span lang="ja">エフェクトウェブ構築</span>
+                                <span lang="en">Effect Web Construction</span>
+                            </strong>
+                            <span lang="ja">：センサーとシューターの柔軟な連接</span>
+                            <span lang="en">: Flexible connection of sensors and shooters</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('resilience')">
+                            <strong>
+                                <span lang="ja">レジリエンシ強化</span>
+                                <span lang="en">Resilience Enhancement</span>
+                            </strong>
+                            <span lang="ja">：分散型で強靭なネットワーク</span>
+                            <span lang="en">: Distributed and robust network</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="approach-detail" class="detail-panel">
+                    <h4>
+                        <span lang="ja">詳細解説</span>
+                        <span lang="en">Detailed Explanation</span>
+                    </h4>
+                    <p>
+                        <strong>
+                            <span lang="ja">背景：</span>
+                            <span lang="en">Background: </span>
+                        </strong>
+                        <span lang="ja">「モザイク戦」と呼ばれる新たな戦い方への対応が必要。分散された部隊がAI等を活用し、相手よりも迅速かつ優れた判断を下しつつ、より多様な攻撃や部隊編成を可能とする「意思決定中心」アプローチの重要性。</span>
+                        <span lang="en">Need to adapt to new warfare concepts like "Mosaic Warfare." The importance of a "decision-centric" approach where distributed forces use AI to make faster and better decisions than adversaries while enabling more diverse attacks and force compositions.</span>
+                    </p>
+                    <p>
+                        <strong>
+                            <span lang="ja">実現手段：</span>
+                            <span lang="en">Implementation Methods: </span>
+                        </strong>
+                        <span lang="ja">大容量・低遅延ネットワーク、リアルタイムデータ伝達、AI全面活用、デジタルツイン技術の統合的活用。</span>
+                        <span lang="en">Integrated use of high-capacity, low-latency networks, real-time data transmission, comprehensive AI utilization, and digital twin technology.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card tech-card" onclick="toggleCardDetail(event, 'tech-detail')">
+                <button class="expand-btn" onclick="event.stopPropagation(); toggleDetail('tech-detail')">+</button>
+                <div class="card-header">
+                    <div class="card-icon">🚀</div>
+                    <h3>
+                        <span lang="ja">重要技術領域</span>
+                        <span lang="en">Key Technology Areas</span>
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li onclick="event.stopPropagation(); showModal('optical-tech')">
+                            <span lang="ja">光電融合・オール光ネットワーク</span>
+                            <span lang="en">Optical-Electronic Convergence & All-Optical Networks</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('quantum-tech')">
+                            <span lang="ja">量子コンピュータ・量子暗号通信</span>
+                            <span lang="en">Quantum Computing & Quantum Cryptography</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('ai-tech')">
+                            <span lang="ja">AI・機械学習技術</span>
+                            <span lang="en">AI & Machine Learning Technologies</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('satellite-tech')">
+                            <span lang="ja">衛星コンステレーション</span>
+                            <span lang="en">Satellite Constellation</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('edge-tech')">
+                            <span lang="ja">エッジコンピューティング</span>
+                            <span lang="en">Edge Computing</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="tech-detail" class="detail-panel">
+                    <h4>
+                        <span lang="ja">技術統合の重要性</span>
+                        <span lang="en">Importance of Technology Integration</span>
+                    </h4>
+                    <p>
+                        <strong>
+                            <span lang="ja">課題：</span>
+                            <span lang="en">Challenges: </span>
+                        </strong>
+                        <span lang="ja">現在のDII（防衛情報通信基盤）では、システム側のニーズ変化やデータ量増大への臨機応変な対応が困難。</span>
+                        <span lang="en">Current DII (Defense Information Infrastructure) struggles to adapt flexibly to changing system needs and increasing data volumes.</span>
+                    </p>
+                    <p>
+                        <strong>
+                            <span lang="ja">解決策：</span>
+                            <span lang="en">Solutions: </span>
+                        </strong>
+                        <span lang="ja">ネットワークとシステムを統合的に構築し、膨大なデータ通信・処理を可能とする新たな防衛情報通信基盤（仮称）の整備。</span>
+                        <span lang="en">Establishing a new Defense Information and Communications Infrastructure (provisional name) that integrates networks and systems to enable massive data communication and processing.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card function-card" onclick="toggleCardDetail(event, 'function-detail')">
+                <button class="expand-btn" onclick="event.stopPropagation(); toggleDetail('function-detail')">+</button>
+                <div class="card-header">
+                    <div class="card-icon">⚡</div>
+                    <h3>
+                        <span lang="ja">7つの強化機能</span>
+                        <span lang="en">Seven Enhanced Functions</span>
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li onclick="event.stopPropagation(); showModal('standoff')">
+                            <span lang="ja">スタンド・オフ防衛能力</span>
+                            <span lang="en">Stand-off Defense Capability</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('iamd')">
+                            <span lang="ja">統合防空ミサイル防衛能力</span>
+                            <span lang="en">Integrated Air and Missile Defense Capability</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('unmanned')">
+                            <span lang="ja">無人アセット防衛能力</span>
+                            <span lang="en">Unmanned Asset Defense Capability</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('cross-domain')">
+                            <span lang="ja">領域横断作戦能力</span>
+                            <span lang="en">Cross-Domain Operations Capability</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('c2')">
+                            <span lang="ja">指揮統制・情報関連機能</span>
+                            <span lang="en">Command, Control & Information Functions</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('mobility')">
+                            <span lang="ja">機動展開能力・国民保護</span>
+                            <span lang="en">Mobility & Civil Protection Capability</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('sustainability')">
+                            <span lang="ja">持続性・強靭性</span>
+                            <span lang="en">Sustainability & Resilience</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="function-detail" class="detail-panel">
+                    <h4>
+                        <span lang="ja">統合的能力発揮</span>
+                        <span lang="en">Integrated Capability Deployment</span>
+                    </h4>
+                    <p>
+                        <span lang="ja">これら7つの機能・能力は個別に機能するのではなく、新たな防衛情報通信基盤を通じて有機的に連携。特に「指揮統制・情報関連機能」が他の6つの能力発揮の基盤となる。</span>
+                        <span lang="en">These seven functions and capabilities do not operate independently but are organically linked through the new defense information and communications infrastructure. The "Command, Control & Information Functions" serve as the foundation for the other six capabilities.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card support-card" onclick="toggleCardDetail(event, 'support-detail')">
+                <button class="expand-btn" onclick="event.stopPropagation(); toggleDetail('support-detail')">+</button>
+                <div class="card-header">
+                    <div class="card-icon">🤝</div>
+                    <h3>
+                        <span lang="ja">実現への取組</span>
+                        <span lang="en">Implementation Initiatives</span>
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li onclick="event.stopPropagation(); showModal('human-resources')">
+                            <strong>
+                                <span lang="ja">人材確保</span>
+                                <span lang="en">Human Resources</span>
+                            </strong>
+                            <span lang="ja">：データサイエンティスト等の専門人材</span>
+                            <span lang="en">: Specialized personnel including data scientists</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('public-private')">
+                            <strong>
+                                <span lang="ja">官民連携</span>
+                                <span lang="en">Public-Private Partnership</span>
+                            </strong>
+                            <span lang="ja">：民間技術の早期取込み</span>
+                            <span lang="en">: Early adoption of civilian technologies</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('international')">
+                            <strong>
+                                <span lang="ja">国際連携</span>
+                                <span lang="en">International Cooperation</span>
+                            </strong>
+                            <span lang="ja">：同盟国・同志国との相互運用性</span>
+                            <span lang="en">: Interoperability with allies and partners</span>
+                        </li>
+                        <li onclick="event.stopPropagation(); showModal('agile')">
+                            <strong>
+                                <span lang="ja">開発手法</span>
+                                <span lang="en">Development Methods</span>
+                            </strong>
+                            <span lang="ja">：アジャイル型開発への移行</span>
+                            <span lang="en">: Transition to agile development</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="support-detail" class="detail-panel">
+                    <h4>
+                        <span lang="ja">総合的な態勢整備</span>
+                        <span lang="en">Comprehensive Organizational Development</span>
+                    </h4>
+                    <p>
+                        <strong>
+                            <span lang="ja">人材：</span>
+                            <span lang="en">Human Resources: </span>
+                        </strong>
+                        <span lang="ja">AIデータ・分析官等の外部専門人材活用と内部育成の両輪</span>
+                        <span lang="en">Dual approach of utilizing external AI/data analysts and internal talent development</span>
+                    </p>
+                    <p>
+                        <strong>
+                            <span lang="ja">産業：</span>
+                            <span lang="en">Industry: </span>
+                        </strong>
+                        <span lang="ja">防衛産業の主業務は民生部門であることを踏まえた連携強化</span>
+                        <span lang="en">Strengthening cooperation recognizing that defense industry's main business is in civilian sectors</span>
+                    </p>
+                    <p>
+                        <strong>
+                            <span lang="ja">国際：</span>
+                            <span lang="en">International: </span>
+                        </strong>
+                        <span lang="ja">技術動向へのキャッチアップと相互運用性の深化</span>
+                        <span lang="en">Keeping pace with technological trends and deepening interoperability</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="architecture">
+            <h2>
+                <span lang="ja">🏗️ 新防衛情報通信基盤アーキテクチャ</span>
+                <span lang="en">🏗️ New Defense ICT Infrastructure Architecture</span>
+            </h2>
+            <div class="layer" onclick="toggleLayer(this)">
+                <h3>
+                    <span lang="ja">④ サービス層</span>
+                    <span lang="en">④ Service Layer</span>
+                </h3>
+                <p>
+                    <span lang="ja">各種作戦に応じたアプリケーション群（意思決定支援、訓練環境、後方補給等）を柔軟に開発・配備</span>
+                    <span lang="en">Flexible development and deployment of applications for various operations (decision support, training environments, logistics, etc.)</span>
+                </p>
+                <div class="layer-detail">
+                    <h4>
+                        <span lang="ja">主要アプリケーション：</span>
+                        <span lang="en">Key Applications:</span>
+                    </h4>
+                    <ul>
+                        <li>
+                            <span lang="ja">AI・デジタルツインによる状況可視化・意思決定支援システム</span>
+                            <span lang="en">Situation visualization and decision support systems using AI and digital twins</span>
+                        </li>
+                        <li>
+                            <span lang="ja">領域統合的な訓練環境とミッション・リハーサル機能</span>
+                            <span lang="en">Cross-domain training environments and mission rehearsal capabilities</span>
+                        </li>
+                        <li>
+                            <span lang="ja">後方補給ネットワークシステム（需要予測・最適化）</span>
+                            <span lang="en">Logistics network system (demand forecasting and optimization)</span>
+                        </li>
+                        <li>
+                            <span lang="ja">戦傷医療情報共有システム（第一線から後送先までシームレス）</span>
+                            <span lang="en">Battlefield medical information sharing system (seamless from frontline to evacuation)</span>
+                        </li>
+                        <li>
+                            <span lang="ja">装備品開発のデジタル化支援環境</span>
+                            <span lang="en">Digital support environment for equipment development</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layer" onclick="toggleLayer(this)">
+                <h3>
+                    <span lang="ja">③ データ層</span>
+                    <span lang="en">③ Data Layer</span>
+                </h3>
+                <p>
+                    <span lang="ja">膨大なデータの集約・最適化処理。エッジコンピューティングとAIによる分散処理を実現</span>
+                    <span lang="en">Aggregation and optimization of massive data. Distributed processing through edge computing and AI</span>
+                </p>
+                <div class="layer-detail">
+                    <h4>
+                        <span lang="ja">技術要素：</span>
+                        <span lang="en">Technical Elements:</span>
+                    </h4>
+                    <ul>
+                        <li>
+                            <span lang="ja">物理分散・仮想統合アーキテクチャ</span>
+                            <span lang="en">Physically distributed, virtually integrated architecture</span>
+                        </li>
+                        <li>
+                            <span lang="ja">作戦地域・宇宙空間でのオンボード処理</span>
+                            <span lang="en">Onboard processing in operational areas and space</span>
+                        </li>
+                        <li>
+                            <span lang="ja">データフォーマット標準化と互換性確保</span>
+                            <span lang="en">Data format standardization and compatibility assurance</span>
+                        </li>
+                        <li>
+                            <span lang="ja">特性に応じたラベリングとアクセス制御</span>
+                            <span lang="en">Characteristic-based labeling and access control</span>
+                        </li>
+                        <li>
+                            <span lang="ja">高速移動体向けデータ最適化</span>
+                            <span lang="en">Data optimization for high-speed mobile assets</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layer" onclick="toggleLayer(this)">
+                <h3>
+                    <span lang="ja">② ネットワーク・インフラ層</span>
+                    <span lang="en">② Network Infrastructure Layer</span>
+                </h3>
+                <p>
+                    <span lang="ja">高速・大容量・低遅延通信。地上回線と衛星通信のマルチネットワーク化による強靭性確保</span>
+                    <span lang="en">High-speed, high-capacity, low-latency communications. Resilience through multi-network integration of terrestrial and satellite communications</span>
+                </p>
+                <div class="layer-detail">
+                    <h4>
+                        <span lang="ja">ネットワーク構成：</span>
+                        <span lang="en">Network Configuration:</span>
+                    </h4>
+                    <ul>
+                        <li>
+                            <span lang="ja">衛星間光通信・衛星-地上間通信の確立</span>
+                            <span lang="en">Establishment of inter-satellite optical communication and satellite-ground communication</span>
+                        </li>
+                        <li>
+                            <span lang="ja">マルチネットワーク自動制御（最適回線の自動選択）</span>
+                            <span lang="en">Multi-network automatic control (automatic selection of optimal routes)</span>
+                        </li>
+                        <li>
+                            <span lang="ja">メッシュ型ネットワーク構成</span>
+                            <span lang="en">Mesh network configuration</span>
+                        </li>
+                        <li>
+                            <span lang="ja">アドホック・ネットワーク（基地局不要の自律分散通信）</span>
+                            <span lang="en">Ad-hoc networks (autonomous distributed communication without base stations)</span>
+                        </li>
+                        <li>
+                            <span lang="ja">海底ケーブル切断等のリスク対応</span>
+                            <span lang="en">Risk mitigation for submarine cable disruption</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layer" onclick="toggleLayer(this)">
+                <h3>
+                    <span lang="ja">① センサー・シューター層</span>
+                    <span lang="en">① Sensor-Shooter Layer</span>
+                </h3>
+                <p>
+                    <span lang="ja">宇宙領域含むオールドメインのセンサー・シューターを柔軟に連接。高級品と中低級品の組合せ</span>
+                    <span lang="en">Flexible connection of sensors and shooters across all domains including space. Combination of high-end and mid/low-end assets</span>
+                </p>
+                <div class="layer-detail">
+                    <h4>
+                        <span lang="ja">アセット構成：</span>
+                        <span lang="en">Asset Configuration:</span>
+                    </h4>
+                    <ul>
+                        <li>
+                            <span lang="ja">高精度・高級センサー/プラットフォーム</span>
+                            <span lang="en">High-precision, high-end sensors/platforms</span>
+                        </li>
+                        <li>
+                            <span lang="ja">比較的安価な中低級センサー/プラットフォームの大量保有</span>
+                            <span lang="en">Mass deployment of relatively inexpensive mid/low-end sensors/platforms</span>
+                        </li>
+                        <li>
+                            <span lang="ja">攻撃下での速やかなアセット組み換え能力</span>
+                            <span lang="en">Rapid asset reconfiguration capability under attack</span>
+                        </li>
+                        <li>
+                            <span lang="ja">センサー・シューターの柔軟な組み合わせによる継戦能力維持</span>
+                            <span lang="en">Maintaining combat capability through flexible sensor-shooter combinations</span>
+                        </li>
+                        <li>
+                            <span lang="ja">常時柔軟な連接確保と完全機能喪失の回避</span>
+                            <span lang="en">Ensuring constant flexible connectivity and avoiding complete functional loss</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <h2>
+                <span lang="ja">📅 実装ロードマップ</span>
+                <span lang="en">📅 Implementation Roadmap</span>
+            </h2>
+            <div class="timeline-item" onclick="toggleTimelineDetail('timeline-1')">
+                <div class="timeline-year">
+                    <span lang="ja">現在</span>
+                    <span lang="en">Present</span>
+                </div>
+                <div>
+                    <span lang="ja">既存DII（防衛情報通信基盤）運用中。サイロ化されたシステムの課題に直面</span>
+                    <span lang="en">Operating existing DII. Facing challenges with siloed systems</span>
+                </div>
+            </div>
+            <div id="timeline-1" class="timeline-detail">
+                <h4>
+                    <span lang="ja">現状の課題：</span>
+                    <span lang="en">Current Challenges:</span>
+                </h4>
+                <ul>
+                    <li>
+                        <span lang="ja">陸海空各自衛隊で個別ニーズに合わせたサイロ化システム</span>
+                        <span lang="en">Siloed systems tailored to individual needs of Ground, Maritime, and Air Self-Defense Forces</span>
+                    </li>
+                    <li>
+                        <span lang="ja">横断的なデータ運用・情報共有の制約</span>
+                        <span lang="en">Constraints on cross-functional data operations and information sharing</span>
+                    </li>
+                    <li>
+                        <span lang="ja">運用ニーズ変化への臨機応変な対応困難</span>
+                        <span lang="en">Difficulty in flexibly responding to changing operational needs</span>
+                    </li>
+                    <li>
+                        <span lang="ja">今後の爆発的データ増大への対応能力不足</span>
+                        <span lang="en">Insufficient capacity to handle explosive data growth</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="timeline-item" onclick="toggleTimelineDetail('timeline-2')">
+                <div class="timeline-year">
+                    <span lang="ja">～2029年</span>
+                    <span lang="en">~2029</span>
+                </div>
+                <div>
+                    <span lang="ja">省クラウド整備で新基盤構築を見据えた柔軟性確保。関連事業の推進</span>
+                    <span lang="en">Ensuring flexibility for new infrastructure through ministry cloud development. Advancing related projects</span>
+                </div>
+            </div>
+            <div id="timeline-2" class="timeline-detail">
+                <h4>
+                    <span lang="ja">移行期の重点事項：</span>
+                    <span lang="en">Transition Period Priorities:</span>
+                </h4>
+                <ul>
+                    <li>
+                        <span lang="ja">現省クラウドに新基盤を見据えた柔軟性確保</span>
+                        <span lang="en">Ensuring flexibility in current ministry cloud for future infrastructure</span>
+                    </li>
+                    <li>
+                        <span lang="ja">ウォーターフォール型からアジャイル型開発への転換</span>
+                        <span lang="en">Transition from waterfall to agile development</span>
+                    </li>
+                    <li>
+                        <span lang="ja">実施可能な取組から機を逸することなく着実に推進</span>
+                        <span lang="en">Steadily advancing feasible initiatives without delay</span>
+                    </li>
+                    <li>
+                        <span lang="ja">技術進展や脅威情勢を踏まえた実装可能技術の逐次投入</span>
+                        <span lang="en">Sequential implementation of feasible technologies based on technological advances and threat situations</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="timeline-item" onclick="toggleTimelineDetail('timeline-3')">
+                <div class="timeline-year">
+                    <span lang="ja">2029年～</span>
+                    <span lang="en">2029~</span>
+                </div>
+                <div>
+                    <span lang="ja">新防衛情報通信基盤（仮称）の本格運用開始。技術進展に応じた継続的発展</span>
+                    <span lang="en">Full operation of new Defense ICT Infrastructure. Continuous development with technological progress</span>
+                </div>
+            </div>
+            <div id="timeline-3" class="timeline-detail">
+                <h4>
+                    <span lang="ja">本格運用期の展開：</span>
+                    <span lang="en">Full Operation Period Development:</span>
+                </h4>
+                <ul>
+                    <li>
+                        <span lang="ja">統合プラットフォームとしての本格稼働</span>
+                        <span lang="en">Full operation as an integrated platform</span>
+                    </li>
+                    <li>
+                        <span lang="ja">7つの機能・能力の統合的発揮</span>
+                        <span lang="en">Integrated deployment of seven functions and capabilities</span>
+                    </li>
+                    <li>
+                        <span lang="ja">民間最新技術の継続的取込み</span>
+                        <span lang="en">Continuous adoption of latest civilian technologies</span>
+                    </li>
+                    <li>
+                        <span lang="ja">国際標準化への貢献と海外展開支援</span>
+                        <span lang="en">Contributing to international standardization and supporting overseas deployment</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="timeline-item" onclick="toggleTimelineDetail('timeline-4')">
+                <div class="timeline-year">
+                    <span lang="ja">将来</span>
+                    <span lang="en">Future</span>
+                </div>
+                <div>
+                    <span lang="ja">ハイブリッド・クラウドへの完全移行。同盟国・同志国との相互運用性確立</span>
+                    <span lang="en">Complete transition to hybrid cloud. Establishing interoperability with allies and partners</span>
+                </div>
+            </div>
+            <div id="timeline-4" class="timeline-detail">
+                <h4>
+                    <span lang="ja">将来ビジョン：</span>
+                    <span lang="en">Future Vision:</span>
+                </h4>
+                <ul>
+                    <li>
+                        <span lang="ja">オンプレミス型からハイブリッド・クラウドへの完全移行</span>
+                        <span lang="en">Complete transition from on-premises to hybrid cloud</span>
+                    </li>
+                    <li>
+                        <span lang="ja">同盟国・同志国とのシームレスな情報共有</span>
+                        <span lang="en">Seamless information sharing with allies and partners</span>
+                    </li>
+                    <li>
+                        <span lang="ja">完全自律分散型の強靭なシステム実現</span>
+                        <span lang="en">Realization of fully autonomous distributed resilient systems</span>
+                    </li>
+                    <li>
+                        <span lang="ja">防衛力強化と経済力強化の好循環確立</span>
+                        <span lang="en">Establishing virtuous cycle between defense and economic strengthening</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('capabilities')">
+                    <span lang="ja">主要機能</span>
+                    <span lang="en">Key Functions</span>
+                </div>
+                <div class="tab" onclick="showTab('technologies')">
+                    <span lang="ja">活用技術</span>
+                    <span lang="en">Technologies</span>
+                </div>
+                <div class="tab" onclick="showTab('challenges')">
+                    <span lang="ja">課題と対策</span>
+                    <span lang="en">Challenges & Solutions</span>
+                </div>
+                <div class="tab" onclick="showTab('benefits')">
+                    <span lang="ja">期待効果</span>
+                    <span lang="en">Expected Benefits</span>
+                </div>
+            </div>
+            
+            <div id="capabilities" class="tab-content active">
+                <h3>
+                    <span lang="ja">プラットフォーム上の主要機能</span>
+                    <span lang="en">Key Platform Functions</span>
+                </h3>
+                <div class="highlight-box" onclick="toggleHighlight(this)">
+                    <h4>
+                        <span lang="ja">🤖 AI・デジタルツイン活用</span>
+                        <span lang="en">🤖 AI & Digital Twin Utilization</span>
+                    </h4>
+                    <p>
+                        <span lang="ja">状況可視化機能、訓練・ミッションリハーサル機能、装備品開発のデジタル化</span>
+                        <span lang="en">Situation visualization, training/mission rehearsal functions, digitalization of equipment development</span>
+                    </p>
+                    <div class="highlight-detail">
+                        <ul>
+                            <li>
+                                <strong>
+                                    <span lang="ja">状況可視化：</span>
+                                    <span lang="en">Situation Visualization: </span>
+                                </strong>
+                                <span lang="ja">遠方の作戦・演習地域や後方支援状況をリアルタイムで直感的に把握</span>
+                                <span lang="en">Real-time intuitive understanding of distant operational/exercise areas and logistics support</span>
+                            </li>
+                            <li>
+                                <strong>
+                                    <span lang="ja">訓練環境：</span>
+                                    <span lang="en">Training Environment: </span>
+                                </strong>
+                                <span lang="ja">領域統合的な戦闘様相を模擬したネットワーク参加型訓練</span>
+                                <span lang="en">Network-based training simulating cross-domain combat scenarios</span>
+                            </li>
+                            <li>
+                                <strong>
+                                    <span lang="ja">装備品開発：</span>
+                                    <span lang="en">Equipment Development: </span>
+                                </strong>
+                                <span lang="ja">システム要求から妥当性評価までのライフサイクル全体をデジタル化</span>
+                                <span lang="en">Digitalization of entire lifecycle from system requirements to validation</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box" onclick="toggleHighlight(this)">
+                    <h4>
+                        <span lang="ja">📦 後方補給ネットワーク</span>
+                        <span lang="en">📦 Logistics Network</span>
+                    </h4>
+                    <p>
+                        <span lang="ja">AIによる需要予測・最適化、官民物流ネットワーク連携、分散運用対応</span>
+                        <span lang="en">AI-based demand forecasting/optimization, public-private logistics network integration, distributed operations support</span>
+                    </p>
+                    <div class="highlight-detail">
+                        <ul>
+                            <li>
+                                <strong>
+                                    <span lang="ja">需要予測：</span>
+                                    <span lang="en">Demand Forecasting: </span>
+                                </strong>
+                                <span lang="ja">複雑な需要予測・分析で必要数量と調達期間を最適化</span>
+                                <span lang="en">Optimizing required quantities and procurement periods through complex demand analysis</span>
+                            </li>
+                            <li>
+                                <strong>
+                                    <span lang="ja">輸送最適化：</span>
+                                    <span lang="en">Transport Optimization: </span>
+                                </strong>
+                                <span lang="ja">官民物流ネットワークとの連接で要時要点への輸送実現</span>
+                                <span lang="en">Achieving timely delivery to critical points through public-private logistics network integration</span>
+                            </li>
+                            <li>
+                                <strong>
+                                    <span lang="ja">分散運用：</span>
+                                    <span lang="en">Distributed Operations: </span>
+                                </strong>
+                                <span lang="ja">被攻撃時の抗たん性確保、全隊員からのデータ入力可能</span>
+                                <span lang="en">Ensuring resilience under attack, enabling data input from all personnel</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box" onclick="toggleHighlight(this)">
+                    <h4>
+                        <span lang="ja">🏥 戦傷医療情報システム</span>
+                        <span lang="en">🏥 Battlefield Medical Information System</span>
+                    </h4>
+                    <p>
+                        <span lang="ja">第一線から後送先までのシームレスな医療情報共有、血液製剤管理</span>
+                        <span lang="en">Seamless medical information sharing from frontline to evacuation, blood product management</span>
+                    </p>
+                    <div class="highlight-detail">
+                        <ul>
+                            <li>
+                                <strong>
+                                    <span lang="ja">情報管理：</span>
+                                    <span lang="en">Information Management: </span>
+                                </strong>
+                                <span lang="ja">傷病者情報の一元管理と共有</span>
+                                <span lang="en">Unified management and sharing of casualty information</span>
+                            </li>
+                            <li>
+                                <strong>
+                                    <span lang="ja">血液製剤：</span>
+                                    <span lang="en">Blood Products: </span>
+                                </strong>
+                                <span lang="ja">使用状況・在庫情報のリアルタイム把握</span>
+                                <span lang="en">Real-time tracking of usage and inventory status</span>
+                            </li>
+                            <li>
+                                <strong>
+                                    <span lang="ja">後送態勢：</span>
+                                    <span lang="en">Evacuation System: </span>
+                                </strong>
+                                <span lang="ja">第一線から後送先病院までの切れ目ない医療態勢</span>
+                                <span lang="en">Seamless medical system from frontline to evacuation hospitals</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="technologies" class="tab-content">
+                <h3>
+                    <span lang="ja">次世代情報通信技術の詳細</span>
+                    <span lang="en">Next-Generation ICT Details</span>
+                </h3>
+                <div class="tech-detail-grid">
+                    <div class="tech-detail-card">
+                        <h4>
+                            <span lang="ja">🌐 通信技術</span>
+                            <span lang="en">🌐 Communication Technologies</span>
+                        </h4>
+                        <ul>
+                            <li>
+                                <span lang="ja">衛星コンステレーションによる全球カバレッジ</span>
+                                <span lang="en">Global coverage through satellite constellation</span>
+                            </li>
+                            <li>
+                                <span lang="ja">衛星間光通信技術（早期ブレークスルー期待）</span>
+                                <span lang="en">Inter-satellite optical communication (early breakthrough expected)</span>
+                            </li>
+                            <li>
+                                <span lang="ja">5G/6G統合ネットワーク</span>
+                                <span lang="en">5G/6G integrated networks</span>
+                            </li>
+                            <li>
+                                <span lang="ja">量子通信による絶対安全な通信路確立</span>
+                                <span lang="en">Establishing absolutely secure communication channels through quantum communication</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tech-detail-card">
+                        <h4>
+                            <span lang="ja">💻 データ処理技術</span>
+                            <span lang="en">💻 Data Processing Technologies</span>
+                        </h4>
+                        <ul>
+                            <li>
+                                <span lang="ja">光電融合技術による超高速処理</span>
+                                <span lang="en">Ultra-high-speed processing through optical-electronic convergence</span>
+                            </li>
+                            <li>
+                                <span lang="ja">量子コンピュータによる複雑計算</span>
+                                <span lang="en">Complex calculations using quantum computers</span>
+                            </li>
+                            <li>
+                                <span lang="ja">エッジAIによる現場即応処理</span>
+                                <span lang="en">Field-responsive processing through edge AI</span>
+                            </li>
+                            <li>
+                                <span lang="ja">データレイク・データメッシュ構造</span>
+                                <span lang="en">Data lake and data mesh architecture</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tech-detail-card">
+                        <h4>
+                            <span lang="ja">🔒 セキュリティ技術</span>
+                            <span lang="en">🔒 Security Technologies</span>
+                        </h4>
+                        <ul>
+                            <li>
+                                <span lang="ja">ゼロトラストアーキテクチャ</span>
+                                <span lang="en">Zero Trust Architecture</span>
+                            </li>
+                            <li>
+                                <span lang="ja">耐量子計算機暗号（PQC）</span>
+                                <span lang="en">Post-Quantum Cryptography (PQC)</span>
+                            </li>
+                            <li>
+                                <span lang="ja">量子鍵配送（QKD）</span>
+                                <span lang="en">Quantum Key Distribution (QKD)</span>
+                            </li>
+                            <li>
+                                <span lang="ja">AIによる異常検知・自動対処</span>
+                                <span lang="en">AI-based anomaly detection and automatic response</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tech-detail-card">
+                        <h4>
+                            <span lang="ja">🤖 AI・自律化技術</span>
+                            <span lang="en">🤖 AI & Autonomous Technologies</span>
+                        </h4>
+                        <ul>
+                            <li>
+                                <span lang="ja">大規模言語モデル（LLM）活用</span>
+                                <span lang="en">Large Language Model (LLM) utilization</span>
+                            </li>
+                            <li>
+                                <span lang="ja">強化学習による自律的最適化</span>
+                                <span lang="en">Autonomous optimization through reinforcement learning</span>
+                            </li>
+                            <li>
+                                <span lang="ja">フェデレーテッドラーニング</span>
+                                <span lang="en">Federated Learning</span>
+                            </li>
+                            <li>
+                                <span lang="ja">説明可能AI（XAI）</span>
+                                <span lang="en">Explainable AI (XAI)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="challenges" class="tab-content">
+                <h3>
+                    <span lang="ja">主要課題と対策の詳細</span>
+                    <span lang="en">Key Challenges and Solutions Details</span>
+                </h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #dee2e6;">
+                            <span lang="ja">課題</span>
+                            <span lang="en">Challenge</span>
+                        </th>
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #dee2e6;">
+                            <span lang="ja">現状</span>
+                            <span lang="en">Current State</span>
+                        </th>
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #dee2e6;">
+                            <span lang="ja">対策</span>
+                            <span lang="en">Solution</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">サイロ化されたシステム</span>
+                            <span lang="en">Siloed Systems</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">陸海空で個別構築、横断的運用困難</span>
+                            <span lang="en">Individual construction by each force, difficult cross-functional operations</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">統合プラットフォーム構築、データ標準化</span>
+                            <span lang="en">Integrated platform construction, data standardization</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">専門人材不足</span>
+                            <span lang="en">Shortage of Specialists</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">データサイエンティスト、プロジェクトリーダー不足</span>
+                            <span lang="en">Lack of data scientists and project leaders</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">AIデータ・分析官採用、外部人材活用、内部育成強化</span>
+                            <span lang="en">AI/data analyst recruitment, external talent utilization, enhanced internal training</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">技術進展への対応</span>
+                            <span lang="en">Adapting to Tech Progress</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">従来型開発では追従困難</span>
+                            <span lang="en">Difficult to keep pace with traditional development</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">アジャイル開発採用、継続的更新体制確立</span>
+                            <span lang="en">Adopting agile development, establishing continuous update system</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">サイバー攻撃リスク</span>
+                            <span lang="en">Cyber Attack Risks</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">高度化・巧妙化する脅威</span>
+                            <span lang="en">Increasingly sophisticated threats</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">多層防御、量子暗号技術導入、ゼロトラスト実装</span>
+                            <span lang="en">Multi-layer defense, quantum cryptography, Zero Trust implementation</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">サプライチェーンリスク</span>
+                            <span lang="en">Supply Chain Risks</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">外国製品依存、オフショア開発増加</span>
+                            <span lang="en">Foreign product dependency, increased offshore development</span>
+                        </td>
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span lang="ja">国内産業強化、自律性向上支援、政府全体施策活用</span>
+                            <span lang="en">Domestic industry strengthening, autonomy enhancement, whole-of-government approach</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div id="benefits" class="tab-content">
+                <h3>
+                    <span lang="ja">戦略実現による期待効果（詳細）</span>
+                    <span lang="en">Expected Benefits from Strategy Implementation (Details)</span>
+                </h3>
+                <div class="capability-grid">
+                    <div class="capability-item" onclick="showModal('benefit-speed')">
+                        <div class="icon">⚡</div>
+                        <h4>
+                            <span lang="ja">即応性向上</span>
+                            <span lang="en">Enhanced Responsiveness</span>
+                        </h4>
+                        <p>
+                            <span lang="ja">数倍～数十倍の意思決定速度</span>
+                            <span lang="en">Decision-making speed increased by several to dozens of times</span>
+                        </p>
+                    </div>
+                    <div class="capability-item" onclick="showModal('benefit-resilience')">
+                        <div class="icon">🛡️</div>
+                        <h4>
+                            <span lang="ja">抗たん性強化</span>
+                            <span lang="en">Enhanced Resilience</span>
+                        </h4>
+                        <p>
+                            <span lang="ja">部分損害でも任務継続可能</span>
+                            <span lang="en">Mission continuation despite partial damage</span>
+                        </p>
+                    </div>
+                    <div class="capability-item" onclick="showModal('benefit-efficiency')">
+                        <div class="icon">⚙️</div>
+                        <h4>
+                            <span lang="ja">効率性改善</span>
+                            <span lang="en">Improved Efficiency</span>
+                        </h4>
+                        <p>
+                            <span lang="ja">省人化・最適化の徹底</span>
+                            <span lang="en">Thorough labor-saving and optimization</span>
+                        </p>
+                    </div>
+                    <div class="capability-item" onclick="showModal('benefit-economy')">
+                        <div class="icon">💰</div>
+                        <h4>
+                            <span lang="ja">経済波及効果</span>
+                            <span lang="en">Economic Ripple Effects</span>
+                        </h4>
+                        <p>
+                            <span lang="ja">防衛と経済の好循環</span>
+                            <span lang="en">Virtuous cycle between defense and economy</span>
+                        </p>
+                    </div>
+                    <div class="capability-item" onclick="showModal('benefit-international')">
+                        <div class="icon">🌏</div>
+                        <h4>
+                            <span lang="ja">国際協力強化</span>
+                            <span lang="en">Enhanced International Cooperation</span>
+                        </h4>
+                        <p>
+                            <span lang="ja">同盟国との相互運用性</span>
+                            <span lang="en">Interoperability with allies</span>
+                        </p>
+                    </div>
+                    <div class="capability-item" onclick="showModal('benefit-innovation')">
+                        <div class="icon">💡</div>
+                        <h4>
+                            <span lang="ja">イノベーション促進</span>
+                            <span lang="en">Innovation Promotion</span>
+                        </h4>
+                        <p>
+                            <span lang="ja">民間技術の社会実装加速</span>
+                            <span lang="en">Accelerated social implementation of civilian tech</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- モーダルウィンドウ -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 現在の言語
+        let currentLang = 'ja';
+        
+        // 言語切り替え
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.body.className = lang === 'en' ? 'en' : '';
+            
+            // ボタンのアクティブ状態を更新
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // LocalStorageに保存
+            localStorage.setItem('preferredLanguage', lang);
+        }
+        
+        // ページ読み込み時に保存された言語を適用
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'ja';
+            if (savedLang === 'en') {
+                document.body.className = 'en';
+                document.querySelectorAll('.lang-btn')[0].classList.remove('active');
+                document.querySelectorAll('.lang-btn')[1].classList.add('active');
+                currentLang = 'en';
+            }
+        });
+        
+        // モーダル内容定義（多言語対応）
+        const modalContents = {
+            'decision-superiority': {
+                ja: {
+                    title: '意思決定の優越',
+                    content: `
+                        <h2>意思決定の優越の実現</h2>
+                        <div class="decision-cycle">
+                            <div class="cycle-step">
+                                <h4>状況認識</h4>
+                                <p>センサー情報の統合</p>
+                            </div>
+                            <div class="cycle-step">
+                                <h4>状況判断</h4>
+                                <p>AIによる分析支援</p>
+                            </div>
+                            <div class="cycle-step">
+                                <h4>決心</h4>
+                                <p>最適選択肢の提示</p>
+                            </div>
+                            <div class="cycle-step">
+                                <h4>行動</h4>
+                                <p>迅速な実行指示</p>
+                            </div>
+                        </div>
+                        <h3>主要な実現手段</h3>
+                        <ul>
+                            <li><strong>大容量・低遅延ネットワーク：</strong>リアルタイムでの情報集約・伝達</li>
+                            <li><strong>AI全面活用：</strong>人間の能力を超えたデータ分析・評価</li>
+                            <li><strong>デジタルツイン：</strong>仮想空間での効果予測・シミュレーション</li>
+                            <li><strong>統合データ管理：</strong>組織横断的なデータ活用基盤</li>
+                        </ul>
+                        <h3>平素からの準備</h3>
+                        <p>全指揮階層での効果的訓練実施、複雑な戦闘様相を模擬した訓練環境構築、ミッション・リハーサル機能による作戦計画の実効性向上が不可欠。</p>
+                    `
+                },
+                en: {
+                    title: 'Decision-Making Superiority',
+                    content: `
+                        <h2>Achieving Decision-Making Superiority</h2>
+                        <div class="decision-cycle">
+                            <div class="cycle-step">
+                                <h4>Situation Awareness</h4>
+                                <p>Integration of sensor information</p>
+                            </div>
+                            <div class="cycle-step">
+                                <h4>Situation Assessment</h4>
+                                <p>AI-supported analysis</p>
+                            </div>
+                            <div class="cycle-step">
+                                <h4>Decision</h4>
+                                <p>Presentation of optimal options</p>
+                            </div>
+                            <div class="cycle-step">
+                                <h4>Action</h4>
+                                <p>Rapid execution orders</p>
+                            </div>
+                        </div>
+                        <h3>Key Implementation Methods</h3>
+                        <ul>
+                            <li><strong>High-capacity, low-latency networks:</strong> Real-time information aggregation and transmission</li>
+                            <li><strong>Comprehensive AI utilization:</strong> Data analysis and evaluation beyond human capabilities</li>
+                            <li><strong>Digital twins:</strong> Effect prediction and simulation in virtual space</li>
+                            <li><strong>Integrated data management:</strong> Cross-organizational data utilization platform</li>
+                        </ul>
+                        <h3>Peacetime Preparation</h3>
+                        <p>Essential elements include effective training at all command levels, building training environments that simulate complex combat scenarios, and improving operational plan effectiveness through mission rehearsal capabilities.</p>
+                    `
+                }
+            },
+            'effect-web': {
+                ja: {
+                    title: '領域横断的なエフェクトウェブ',
+                    content: `
+                        <h2>エフェクトウェブの構築</h2>
+                        <h3>概念</h3>
+                        <p>陸海空・宇宙領域を含むオールドメインの各種センサーとシューターを、単線的ではなく網目状に連接。戦況や作戦に応じて最適なアセットを柔軟に選択・運用。</p>
+                        <h3>対象領域</h3>
+                        <p><strong>東西南北それぞれ約3,000キロ</strong>に及ぶ我が国周辺の広大な領域</p>
+                        <h3>必要な能力</h3>
+                        <ul>
+                            <li>極めて短時間での情報解析・処理</li>
+                            <li>センサー・シューターの多様な組み合わせ</li>
+                            <li>相手の対応を困難にする柔軟性</li>
+                            <li>衛星での解析・処理、衛星間通信</li>
+                            <li>衛星-陸海空アセット間のリアルタイム伝送</li>
+                        </ul>
+                        <h3>実現の鍵</h3>
+                        <p>民間の先端技術（衛星コンステレーション、AI、5G/6G等）を取り込み、飛躍的に発展させることが成否を分ける。</p>
+                    `
+                },
+                en: {
+                    title: 'Cross-Domain Effect Web',
+                    content: `
+                        <h2>Building the Effect Web</h2>
+                        <h3>Concept</h3>
+                        <p>Connecting various sensors and shooters across all domains including land, sea, air, and space in a mesh network rather than linear connections. Flexible selection and operation of optimal assets according to combat situations and operations.</p>
+                        <h3>Target Area</h3>
+                        <p><strong>Approximately 3,000 kilometers in each direction</strong> - the vast area surrounding Japan</p>
+                        <h3>Required Capabilities</h3>
+                        <ul>
+                            <li>Extremely rapid information analysis and processing</li>
+                            <li>Diverse combinations of sensors and shooters</li>
+                            <li>Flexibility that makes adversary response difficult</li>
+                            <li>Satellite-based analysis and processing, inter-satellite communication</li>
+                            <li>Real-time transmission between satellites and land/sea/air assets</li>
+                        </ul>
+                        <h3>Key to Realization</h3>
+                        <p>Success depends on incorporating and dramatically developing civilian advanced technologies (satellite constellations, AI, 5G/6G, etc.).</p>
+                    `
+                }
+            },
+            'quantum-tech': {
+                ja: {
+                    title: '量子関連技術',
+                    content: `
+                        <h2>量子コンピュータ・量子暗号通信</h2>
+                        <h3>量子コンピュータの活用</h3>
+                        <ul>
+                            <li>複雑な最適化問題の高速解決</li>
+                            <li>大規模シミュレーション</li>
+                            <li>暗号解読への対抗（耐量子計算機暗号の必要性）</li>
+                        </ul>
+                        <h3>量子暗号通信</h3>
+                        <ul>
+                            <li>理論上絶対に盗聴不可能な通信</li>
+                            <li>量子鍵配送（QKD）による鍵交換</li>
+                            <li>重要拠点間の機密通信確保</li>
+                        </ul>
+                        <h3>実装上の課題</h3>
+                        <p>量子コンピュータの実用化時期を見据えたセキュリティ対策の準備が必要。</p>
+                    `
+                },
+                en: {
+                    title: 'Quantum Technologies',
+                    content: `
+                        <h2>Quantum Computing & Quantum Cryptography</h2>
+                        <h3>Quantum Computing Applications</h3>
+                        <ul>
+                            <li>High-speed solving of complex optimization problems</li>
+                            <li>Large-scale simulations</li>
+                            <li>Countering cryptanalysis (need for post-quantum cryptography)</li>
+                        </ul>
+                        <h3>Quantum Cryptography</h3>
+                        <ul>
+                            <li>Theoretically unbreakable communication</li>
+                            <li>Key exchange through Quantum Key Distribution (QKD)</li>
+                            <li>Securing classified communications between critical facilities</li>
+                        </ul>
+                        <h3>Implementation Challenges</h3>
+                        <p>Security measures must be prepared in anticipation of quantum computer commercialization.</p>
+                    `
+                }
+            },
+            'human-resources': {
+                ja: {
+                    title: '人材確保・育成',
+                    content: `
+                        <h2>専門人材の確保・育成戦略</h2>
+                        <h3>必要な人材</h3>
+                        <ul>
+                            <li><strong>データ・アナリスト：</strong>作戦上の要求に応じた情報生成</li>
+                            <li><strong>データ・サイエンティスト：</strong>高度な統計処理・機械学習</li>
+                            <li><strong>プロジェクト・リーダー：</strong>統括・進捗管理</li>
+                            <li><strong>サイバーセキュリティ専門家：</strong>脅威対処・防御構築</li>
+                        </ul>
+                        <h3>確保方策</h3>
+                        <ul>
+                            <li>AIデータ・分析官等の新規採用枠活用</li>
+                            <li>部外専門人材の柔軟な取り込み</li>
+                            <li>意欲ある人材の新規採用推進</li>
+                            <li>専門教育の拡充</li>
+                            <li>部内人材の計画的育成</li>
+                        </ul>
+                    `
+                },
+                en: {
+                    title: 'Human Resources Development',
+                    content: `
+                        <h2>Specialist Recruitment and Training Strategy</h2>
+                        <h3>Required Personnel</h3>
+                        <ul>
+                            <li><strong>Data Analysts:</strong> Information generation based on operational requirements</li>
+                            <li><strong>Data Scientists:</strong> Advanced statistical processing and machine learning</li>
+                            <li><strong>Project Leaders:</strong> Overall management and progress tracking</li>
+                            <li><strong>Cybersecurity Specialists:</strong> Threat response and defense construction</li>
+                        </ul>
+                        <h3>Acquisition Strategies</h3>
+                        <ul>
+                            <li>Utilizing new recruitment slots for AI/data analysts</li>
+                            <li>Flexible incorporation of external specialists</li>
+                            <li>Promoting recruitment of motivated personnel</li>
+                            <li>Expanding specialized education</li>
+                            <li>Systematic development of internal personnel</li>
+                        </ul>
+                    `
+                }
+            },
+            'agile': {
+                ja: {
+                    title: 'アジャイル型開発',
+                    content: `
+                        <h2>開発手法の転換</h2>
+                        <h3>従来型（ウォーターフォール）の課題</h3>
+                        <ul>
+                            <li>要求変更への対応困難</li>
+                            <li>長期開発による陳腐化リスク</li>
+                            <li>フィードバック反映の遅れ</li>
+                        </ul>
+                        <h3>アジャイル型の利点</h3>
+                        <ul>
+                            <li>短期反復による早期価値提供</li>
+                            <li>柔軟な要求変更対応</li>
+                            <li>継続的な改善・最適化</li>
+                            <li>利用者フィードバックの即座反映</li>
+                        </ul>
+                        <h3>実装方針</h3>
+                        <p>技術進展に伴う変更や作戦上の要求を適時適切に反映。従来の防衛力整備を超えた不断の見直し・再検討を実施。</p>
+                    `
+                },
+                en: {
+                    title: 'Agile Development',
+                    content: `
+                        <h2>Development Method Transformation</h2>
+                        <h3>Traditional (Waterfall) Challenges</h3>
+                        <ul>
+                            <li>Difficulty adapting to requirement changes</li>
+                            <li>Risk of obsolescence due to long development periods</li>
+                            <li>Delayed feedback incorporation</li>
+                        </ul>
+                        <h3>Agile Advantages</h3>
+                        <ul>
+                            <li>Early value delivery through short iterations</li>
+                            <li>Flexible adaptation to requirement changes</li>
+                            <li>Continuous improvement and optimization</li>
+                            <li>Immediate incorporation of user feedback</li>
+                        </ul>
+                        <h3>Implementation Policy</h3>
+                        <p>Timely and appropriate incorporation of technological advances and operational requirements. Continuous review and reconsideration beyond traditional defense capability development.</p>
+                    `
+                }
+            }
+        };
+        
+        // 基本的な表示切替関数
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+        
+        function toggleDetail(detailId) {
+            const detail = document.getElementById(detailId);
+            detail.classList.toggle('active');
+            
+            const button = event.target;
+            button.textContent = detail.classList.contains('active') ? '-' : '+';
+        }
+        
+        function toggleCardDetail(event, detailId) {
+            // カード内のリンクやボタンをクリックした場合は、カードの展開を行わない
+            if (event.target.tagName === 'LI' || event.target.tagName === 'BUTTON') {
+                return;
+            }
+            
+            const detail = document.getElementById(detailId);
+            detail.classList.toggle('active');
+            
+            // プラスボタンの更新
+            const card = event.currentTarget;
+            const button = card.querySelector('.expand-btn');
+            button.textContent = detail.classList.contains('active') ? '-' : '+';
+        }
+        
+        function toggleLayer(layer) {
+            layer.classList.toggle('expanded');
+        }
+        
+        function toggleTimelineDetail(detailId) {
+            const detail = document.getElementById(detailId);
+            detail.classList.toggle('active');
+        }
+        
+        function toggleHighlight(element) {
+            element.classList.toggle('expanded');
+        }
+        
+        function showModal(contentKey) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            
+            if (modalContents[contentKey] && modalContents[contentKey][currentLang]) {
+                modalBody.innerHTML = modalContents[contentKey][currentLang].content;
+                modal.classList.add('active');
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+        
+        // モーダル外クリックで閉じる
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // カードホバーエフェクト
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // スクロールアニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.6s ease';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.card, .layer, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
