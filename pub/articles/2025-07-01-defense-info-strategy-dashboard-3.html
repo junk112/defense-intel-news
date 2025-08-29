@@ -1716,7 +1716,7 @@
     <!-- モーダルウィンドウ -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <span class="close-modal" onclick="hideModal()">&times;</span>
             <div id="modal-body"></div>
         </div>
     </div>
@@ -2053,15 +2053,16 @@
             }
         }
         
-        function closeModal() {
+        function hideModal() {
             document.getElementById('modal').classList.remove('active');
+            console.log('Modal closed');
         }
         
         // モーダル外クリックで閉じる
         window.onclick = function(event) {
             const modal = document.getElementById('modal');
             if (event.target === modal) {
-                closeModal();
+                hideModal();
             }
         }
         
@@ -2099,6 +2100,17 @@
         document.querySelectorAll('.card, .layer, .timeline-item').forEach(el => {
             observer.observe(el);
         });
+        
+        // 6. initializeArticle() - 記事初期化【必須】
+        function initializeArticle() {
+            // 初期言語設定
+            setLanguage(currentLang || 'ja');
+            
+            console.log('Article initialized');
+        }
+        
+        // 記事初期化実行【必須】
+        initializeArticle();
     </script>
 </body>
 </html>

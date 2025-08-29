@@ -9,6 +9,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { JSDOM } from 'jsdom';
 import { Article, ArticleLanguage } from './types';
+import { inferTechTags, sortTechTags, getTechTags } from './techTags';
 
 const ARTICLE_CATEGORIES = {
   DEFENSE_POLICY: '防衛政策',
@@ -59,6 +60,14 @@ export class ArticleParser {
       // 言語情報抽出
       const languageInfo = this.extractLanguageInfo(document, title, excerpt);
       
+      // 技術タグの自動推測
+      const techTagIds = inferTechTags(fileName, title, tags);
+      const techTags = getTechTags(techTagIds);
+      const sortedTechTags = sortTechTags(techTags);
+      
+      // 主要タグ（表示用、最大3個）
+      const primaryTechTagIds = sortedTechTags.slice(0, 3).map(tag => tag.id);
+      
       const article: Article = {
         id: fileName,
         slug: fileName,
@@ -72,7 +81,9 @@ export class ArticleParser {
         excerptEn: languageInfo.excerptEn,
         excerptJa: languageInfo.excerptJa,
         category,
-        tags,
+        tags, // 既存のタグも保持
+        techTags: techTagIds, // 技術タグID配列
+        primaryTechTags: primaryTechTagIds, // 主要技術タグ
         readTime,
         wordCount,
         lastModified: stats.mtime,

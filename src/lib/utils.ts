@@ -150,12 +150,38 @@ export function truncateText(text: string, maxLength: number, suffix: string = '
 }
 
 /**
+ * カテゴリの多言語マッピング
+ */
+export const CATEGORY_TRANSLATIONS = {
+  '防衛政策': 'Defense Policy',
+  '国際情勢': 'International Affairs',
+  '防衛技術': 'Defense Technology',
+  'インテリジェンス': 'Intelligence',
+  'サイバーセキュリティ': 'Cybersecurity',
+  '宇宙防衛': 'Space Defense',
+  '海洋安全保障': 'Maritime Security',
+  '分析レポート': 'Analysis Report',
+  'ダッシュボード': 'Dashboard',
+  'その他': 'Others'
+} as const;
+
+/**
+ * カテゴリ名を言語に応じて翻訳
+ */
+export function getCategoryName(category: string, language: 'ja' | 'en'): string {
+  if (language === 'en' && category in CATEGORY_TRANSLATIONS) {
+    return CATEGORY_TRANSLATIONS[category as keyof typeof CATEGORY_TRANSLATIONS];
+  }
+  return category;
+}
+
+/**
  * カテゴリ名を色に変換
  */
 export function getCategoryColor(category: string): string {
   const colorMap: Record<string, string> = {
     '防衛政策': 'bg-red-100 text-red-800',
-    '国際情勢': 'bg-orange-100 text-orange-800',
+    '国際情勢': 'bg-orange-100 text-orange-800', 
     '防衛技術': 'bg-blue-100 text-blue-800',
     'インテリジェンス': 'bg-purple-100 text-purple-800',
     'サイバーセキュリティ': 'bg-green-100 text-green-800',
@@ -170,12 +196,18 @@ export function getCategoryColor(category: string): string {
 }
 
 /**
- * 記事の読了時間をテキストに変換
+ * 記事の読了時間をテキストに変換（多言語対応）
  */
-export function formatReadTime(minutes: number): string {
-  if (minutes < 1) return '1分未満';
-  if (minutes === 1) return '1分';
-  return `${minutes}分`;
+export function formatReadTime(minutes: number, language: 'ja' | 'en' = 'ja'): string {
+  if (language === 'en') {
+    if (minutes < 1) return 'Less than 1 min';
+    if (minutes === 1) return '1 min';
+    return `${minutes} min`;
+  } else {
+    if (minutes < 1) return '1分未満';
+    if (minutes === 1) return '1分';
+    return `${minutes}分`;
+  }
 }
 
 /**

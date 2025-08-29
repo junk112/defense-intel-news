@@ -18,6 +18,8 @@ export interface Article {
   excerptJa?: string;                   // 日本語要約
   category: string;                     // カテゴリ（ファイル名や内容から推測）
   tags: string[];                       // タグ（記事内容から自動抽出）
+  techTags: string[];                   // 技術タグIDの配列
+  primaryTechTags: string[];            // 表示用主要タグ（最大3個）
   readTime: number;                     // 推定読了時間（分）
   wordCount: number;                    // 文字数
   lastModified: Date;                   // 最終更新日時
