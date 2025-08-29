@@ -495,35 +495,41 @@
 <body>
     <div class="container">
         <div class="main-card">
-            <h1>イラン・イスラエル対立構造分析 (2025年6月16日時点)</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 style="margin: 0;" data-ja="イラン・イスラエル対立構造分析 (2025年6月16日時点)" data-en="Iran-Israel Conflict Structure Analysis (as of June 16, 2025)">イラン・イスラエル対立構造分析 (2025年6月16日時点)</h1>
+                <div class="language-switch" style="display: flex; gap: 8px;">
+                    <button class="lang-btn active" onclick="setLanguage('ja')" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #f8f9fa; cursor: pointer; font-weight: 600;">日本語</button>
+                    <button class="lang-btn" onclick="setLanguage('en')" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #f8f9fa; cursor: pointer; font-weight: 600;">English</button>
+                </div>
+            </div>
             
             <!-- タブナビゲーション -->
             <div class="tab-nav">
-                <button class="tab-button active" onclick="switchTab('overview', this)">
+                <button class="tab-button active" onclick="showTab('overview', this)">
                     <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                     <span>概要</span>
                 </button>
-                <button class="tab-button" onclick="switchTab('timeline', this)">
+                <button class="tab-button" onclick="showTab('timeline', this)">
                     <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                     <span>タイムライン</span>
                 </button>
-                <button class="tab-button" onclick="switchTab('current', this)">
+                <button class="tab-button" onclick="showTab('current', this)">
                     <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                     <span>最新状況</span>
                 </button>
-                <button class="tab-button" onclick="switchTab('international', this)">
+                <button class="tab-button" onclick="showTab('international', this)">
                     <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span>国際反応</span>
                 </button>
-                <button class="tab-button" onclick="switchTab('scenarios', this)">
+                <button class="tab-button" onclick="showTab('scenarios', this)">
                     <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
@@ -1068,8 +1074,28 @@
     </div>
     
     <script>
-        // タブ切り替え
-        function switchTab(tabId, buttonElement) {
+        // 統一JavaScript関数仕様準拠
+        let currentLang = 'ja';
+        
+        // 1. setLanguage(lang) - 言語切り替え【必須】
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // 言語ボタンのアクティブ状態更新
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[onclick*="${lang}"]`)?.classList.add('active');
+            
+            // data-ja/data-en属性による自動テキスト更新
+            document.querySelectorAll('[data-ja]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if(text) el.textContent = text;
+            });
+            
+            console.log(`Language changed to: ${lang}`);
+        }
+        
+        // 2. showTab(tabId) - タブ切り替え【タブがある場合必須】
+        function showTab(tabId, buttonElement) {
             // すべてのタブコンテンツを非表示
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
@@ -1089,9 +1115,46 @@
             if (buttonElement) {
                 buttonElement.classList.add('active');
             }
+            
+            console.log(`Tab switched to: ${tabId}`);
         }
         
-        // タイムライン詳細の表示/非表示
+        // 3. showModal(modalId, data) - モーダル表示【この記事では未使用だが統一仕様として実装】
+        function showModal(modalId, data) {
+            const modal = document.getElementById('modal') || document.querySelector('.modal');
+            const title = document.getElementById('modal-title') || modal?.querySelector('.modal-title, .modal-header h2, .modal-header h3');
+            const body = document.getElementById('modal-body') || modal?.querySelector('.modal-body, .modal-content');
+            
+            if(modal) {
+                if(title && data?.title) title.textContent = data.title;
+                if(body && data?.content) body.innerHTML = data.content;
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+            }
+            
+            console.log(`Modal opened: ${modalId}`);
+        }
+        
+        // 4. hideModal() - モーダル非表示【この記事では未使用だが統一仕様として実装】
+        function hideModal() {
+            const modal = document.getElementById('modal') || document.querySelector('.modal');
+            if(modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
+            
+            console.log('Modal closed');
+        }
+        
+        // 5. initializeArticle() - 記事初期化【必須】
+        function initializeArticle() {
+            // 初期言語設定
+            setLanguage(currentLang || 'ja');
+            
+            console.log('Article initialized');
+        }
+        
+        // タイムライン詳細の表示/非表示（記事固有機能）
         function toggleTimelineDetail(index) {
             const detail = document.getElementById('timeline-detail-' + index);
             detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
@@ -1139,6 +1202,9 @@
                 }
             });
         });
+        
+        // 記事初期化実行【必須】
+        initializeArticle();
     </script>
 </body>
 </html>

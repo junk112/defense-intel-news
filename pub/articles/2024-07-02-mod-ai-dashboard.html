@@ -774,7 +774,7 @@
     <!-- モーダル -->
     <div id="detailModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <span class="close-btn" onclick="hideModal()">&times;</span>
             <div class="modal-header">
                 <h2 id="modalTitle">詳細情報</h2>
             </div>
@@ -2603,7 +2603,7 @@
             }
         }
         
-        function closeModal() {
+        function hideModal() {
             const modal = document.getElementById('detailModal');
             modal.classList.remove('active');
         }
@@ -2619,21 +2619,21 @@
         // ESCキーでモーダルを閉じる
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                closeModal();
+                hideModal();
             }
         });
         
+        // 統一初期化関数
+        function initializeArticle() {
+            // 初期言語設定
+            const savedLang = localStorage.getItem('language') || 'ja';
+            setLanguage(savedLang);
+            console.log('Article initialized');
+        }
+        
         // ページ読み込み時に保存された言語設定を適用
         document.addEventListener('DOMContentLoaded', function() {
-            const savedLang = localStorage.getItem('language') || 'ja';
-            if (savedLang !== 'ja') {
-                // 言語ボタンを見つけて適切なものをクリック
-                document.querySelectorAll('.lang-btn').forEach(btn => {
-                    if (btn.textContent === 'English' && savedLang === 'en') {
-                        btn.click();
-                    }
-                });
-            }
+            initializeArticle();
         });
     </script>
 </body>

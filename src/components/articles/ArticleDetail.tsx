@@ -237,12 +237,62 @@ function executeScripts(scripts: string, articleId?: string) {
     modifiedScript = modifiedScript.replace(/\b(let|const|var)\s+observer\s*=/g, 'window.observer =');
     modifiedScript = modifiedScript.replace(/\bobserver\s*=/g, 'window.observer =');
     
-    // currentLang = 'xx' の形式も window.currentLang に変更
-    modifiedScript = modifiedScript.replace(/\bcurrentLang\s*=/g, 'window.currentLang =');
+    // data変数も重複を防ぐ（記事間での競合回避）
+    // articleIdに含まれるハイフンやその他の特殊文字を有効なJavaScript識別子に変換
+    const safeArticleId = (articleId || 'unknown').replace(/[^a-zA-Z0-9_]/g, '_');
+    const articleDataVar = `data_${safeArticleId}`;
+    
+    console.log(`[executeScripts] Creating safe variable name: ${articleDataVar} from articleId: ${articleId}`);
+    
+    // より安全なアプローチ: 特定パターンのみ変換
+    // 1. グローバルdata宣言のみ変換（複数行のオブジェクトリテラル）
+    modifiedScript = modifiedScript.replace(/^(\s*)(const|let|var)\s+data\s*=\s*{\s*$/gm, `$1window.${articleDataVar} = {`);
+    
+    // 2. 明確にグローバルdataを参照している特定のパターンのみ変換
+    // Golden Dome記事の特徴的なパターン: data.systems, data.threats, data.milestones, data.industry
+    const globalDataProperties = ['systems', 'threats', 'milestones', 'industry'];
+    
+    // グローバルdata宣言が存在する場合のみ、これらの特定プロパティを変換
+    if (modifiedScript.includes(`window.${articleDataVar} = {`)) {
+      globalDataProperties.forEach(prop => {
+        // data.systems → window.data_xxx.systems
+        const regex = new RegExp(`\\bdata\\.${prop}\\b`, 'g');
+        modifiedScript = modifiedScript.replace(regex, `window.${articleDataVar}.${prop}`);
+        
+        // data.systems[...] などの配列アクセスも変換
+        const arrayRegex = new RegExp(`\\bdata\\.${prop}\\[`, 'g');
+        modifiedScript = modifiedScript.replace(arrayRegex, `window.${articleDataVar}.${prop}[`);
+      });
+      
+      console.log(`[executeScripts] Transformed global data properties: ${globalDataProperties.join(', ')}`);
+    } else {
+      console.log(`[executeScripts] No global data object found, skipping data reference transformation`);
+    }
+    
+    // 重要: すべての関数定義をグローバルに変換
+    // function functionName(...) { を window.functionName = function(...) { に変換
+    modifiedScript = modifiedScript.replace(/function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g, 'window.$1 = function(');
+    console.log('[executeScripts] Converted all function declarations to global');
+    
+    // el関数など、内部で使われる可能性のある関数の参照も修正
+    // ただし、メソッド呼び出し（object.method）は除外
+    modifiedScript = modifiedScript.replace(/(?<![.\w])el\(/g, 'window.el(');
+    
+    // buildSystems, buildMatrix, buildTimeline, buildIndustry の呼び出しも確認
+    const functionsToMakeGlobal = ['buildSystems', 'buildMatrix', 'buildTimeline', 'buildIndustry'];
+    functionsToMakeGlobal.forEach(funcName => {
+      const regex = new RegExp(`(?<![.\\w])${funcName}\\(`, 'g');
+      modifiedScript = modifiedScript.replace(regex, `window.${funcName}(`);
+    });
+    
+    // currentLang = 'xx' の形式も window.currentLang に変更 (より安全に)
+    modifiedScript = modifiedScript.replace(/\bcurrentLang\s*=\s*(['"][^'"]*['"])/g, 'window.currentLang = $1');
     
     // currentLang の参照を window.currentLang に変更
-    modifiedScript = modifiedScript.replace(/\(currentLang/g, '(window.currentLang');
-    modifiedScript = modifiedScript.replace(/\s+currentLang/g, ' window.currentLang');
+    modifiedScript = modifiedScript.replace(/\(currentLang\b/g, '(window.currentLang');
+    modifiedScript = modifiedScript.replace(/\s+currentLang\b/g, ' window.currentLang');
+    modifiedScript = modifiedScript.replace(/===\s*currentLang\b/g, '=== window.currentLang');
+    modifiedScript = modifiedScript.replace(/==\s*currentLang\b/g, '== window.currentLang');
     
     // setLanguage関数の引数問題を修正
     modifiedScript = modifiedScript.replace(
@@ -259,11 +309,78 @@ function executeScripts(scripts: string, articleId?: string) {
     // グローバルに初期値を設定
     (window as any).currentLang = storedLang;
     
-    // スクリプトを直接実行
-    const scriptElement = document.createElement('script');
-    scriptElement.textContent = modifiedScript;
-    scriptElement.setAttribute('data-article-script', 'true');
-    document.body.appendChild(scriptElement);
+    // デバッグ用: 変換後のスクリプトの内容を確認
+    console.log('[executeScripts] Modified script preview:', modifiedScript.substring(0, 500));
+    
+    // Direct script injection for true global scope execution
+    try {
+      console.log('[executeScripts] Executing script via direct injection');
+      console.log('[executeScripts] Final script preview (first 800 chars):', modifiedScript.substring(0, 800));
+      
+      // Create and inject script element for global execution with error handling
+      const scriptElement = document.createElement('script');
+      scriptElement.textContent = `
+        try {
+          ${modifiedScript}
+          console.log('[ArticleScript] Script executed successfully');
+          
+          // 標準関数の確認（エラーメッセージを減らすため情報レベルに変更）
+          const standardFunctions = ['setLanguage', 'showTab', 'showModal', 'hideModal', 'showDetail', 'initializeArticle'];
+          standardFunctions.forEach(funcName => {
+            if (typeof window[funcName] === 'function') {
+              console.log('[ArticleScript] ✅ ' + funcName + ' 関数が利用可能');
+            } else {
+              console.log('[ArticleScript] ℹ️ ' + funcName + ' 関数は未実装（記事に応じてオプション）');
+            }
+          });
+          
+          // initializeArticle実行（存在する場合）
+          if (typeof window.initializeArticle === 'function') {
+            window.initializeArticle();
+            console.log('[ArticleScript] 記事初期化完了');
+          }
+        } catch (error) {
+          console.error('[ArticleScript] Runtime error in script:', error);
+          console.error('[ArticleScript] Error stack:', error.stack);
+        }
+      `;
+      scriptElement.setAttribute('data-article-script', 'true');
+      scriptElement.setAttribute('data-article-id', articleId || 'unknown');
+      
+      // Add to document head for immediate execution in global scope
+      document.head.appendChild(scriptElement);
+      
+      console.log('[executeScripts] Script injected and executed in global scope');
+      
+      // 統一された標準関数セットを確認
+      const standardFunctions = [
+        'setLanguage', 'showTab', 'showModal', 'hideModal', 'showDetail', 'initializeArticle'
+      ];
+      
+      setTimeout(() => {
+        standardFunctions.forEach(funcName => {
+          if (typeof (window as any)[funcName] === 'function') {
+            console.log(`[executeScripts] ✅ ${funcName} 関数が利用可能です`);
+          } else {
+            console.log(`[executeScripts] ℹ️ ${funcName} 関数は未実装です（この記事では不要）`);
+          }
+        });
+        
+        // 必須関数setLanguageの特別チェック
+        if (typeof (window as any).setLanguage === 'function') {
+          console.log('[executeScripts] ✅ setLanguage関数が正常に登録されました');
+        } else {
+          console.error('[executeScripts] ❌ setLanguage関数が見つかりません（必須関数）');
+        }
+      }, 50);
+      
+    } catch (error) {
+      console.error('[executeScripts] Script injection failed:', error);
+      console.error('[executeScripts] Error details:', error instanceof Error ? error.message : String(error));
+      
+      // Log the problematic part of the script for debugging
+      console.error('[executeScripts] Script that failed (first 1000 chars):', modifiedScript.substring(0, 1000));
+    }
     
     // 実行フラグを設定
     (window as any)[`__${scriptId}_executed`] = true;

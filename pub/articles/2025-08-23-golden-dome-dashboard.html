@@ -82,28 +82,28 @@
       </div>
     </div>
     <div class="lang">
-      <button class="btn active" id="btn-ja" onclick="setLang('ja')">日本語</button>
-      <button class="btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="btn active" id="btn-ja" onclick="setLanguage('ja')">日本語</button>
+      <button class="btn" id="btn-en" onclick="setLanguage('en')">English</button>
     </div>
   </div>
 
   <div class="kpis">
-    <div class="kpi" onclick="openModal('funding')">
+    <div class="kpi" onclick="showModal('funding')">
       <div class="n" id="kpi-funding">$25B</div>
       <div class="l" data-ja="2025年和解法での初期資金（CRS）" data-en="Initial funding in 2025 reconciliation law (CRS)">2025年和解法での初期資金（CRS）</div>
       <div class="small">IN12576</div>
     </div>
-    <div class="kpi" onclick="openModal('layers')">
+    <div class="kpi" onclick="showModal('layers')">
       <div class="n">4</div>
       <div class="l" data-ja="アーキテクチャ層（衛星×1・地上×3）" data-en="Architecture layers (1 space, 3 ground)">アーキテクチャ層（衛星×1・地上×3）</div>
       <div class="small">Reuters 2025-08-12</div>
     </div>
-    <div class="kpi" onclick="openModal('leader')">
+    <div class="kpi" onclick="showModal('leader')">
       <div class="n">GDA PM</div>
       <div class="l" data-ja="グートライン大将就任 (2025-07-22)" data-en="Gen. Guetlein confirmed (2025-07-22)">グートライン大将就任 (2025-07-22)</div>
       <div class="small">DoD Release</div>
     </div>
-    <div class="kpi" onclick="openModal('lrdr')">
+    <div class="kpi" onclick="showModal('lrdr')">
       <div class="n">LRDR</div>
       <div class="l" data-ja="ICBM目標の飛翔試験追尾成功 (2025-06-23)" data-en="Tracked ICBM-rep target in flight test (2025-06-23)">ICBM目標の飛翔試験追尾成功 (2025-06-23)</div>
       <div class="small">DVIDS</div>
@@ -111,17 +111,17 @@
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="overview" onclick="switchTab('overview')" data-ja="概要" data-en="Overview">概要</div>
-    <div class="tab" data-tab="systems" onclick="switchTab('systems')" data-ja="システム" data-en="Systems">システム</div>
-    <div class="tab" data-tab="threats" onclick="switchTab('threats')" data-ja="脅威" data-en="Threats">脅威</div>
-    <div class="tab" data-tab="budget" onclick="switchTab('budget')" data-ja="予算・スケジュール" data-en="Budget & Schedule">予算・スケジュール</div>
-    <div class="tab" data-tab="industry" onclick="switchTab('industry')" data-ja="産業状況" data-en="Industry">産業状況</div>
-    <div class="tab" data-tab="risks" onclick="switchTab('risks')" data-ja="リスク/論点" data-en="Risks & Issues">リスク/論点</div>
+    <div class="tab active" data-tab="overview" onclick="showTab('overview')" data-ja="概要" data-en="Overview">概要</div>
+    <div class="tab" data-tab="systems" onclick="showTab('systems')" data-ja="システム" data-en="Systems">システム</div>
+    <div class="tab" data-tab="threats" onclick="showTab('threats')" data-ja="脅威" data-en="Threats">脅威</div>
+    <div class="tab" data-tab="budget" onclick="showTab('budget')" data-ja="予算・スケジュール" data-en="Budget & Schedule">予算・スケジュール</div>
+    <div class="tab" data-tab="industry" onclick="showTab('industry')" data-ja="産業状況" data-en="Industry">産業状況</div>
+    <div class="tab" data-tab="risks" onclick="showTab('risks')" data-ja="リスク/論点" data-en="Risks & Issues">リスク/論点</div>
   </div>
 
   <section id="overview" class="panel">
     <div class="grid">
-      <div class="card" onclick="openModal('eo')">
+      <div class="card" onclick="showModal('eo')">
         <h3 data-ja="📜 行政命令と基本方針" data-en="📜 Executive Order & Policy">📜 行政命令と基本方針</h3>
         <div class="tagbar">
           <span class="pill">EO 14186</span>
@@ -133,7 +133,7 @@
           <li data-ja="DoD直轄のプログラム・マネジメント体制を創設" data-en="Creates direct-report PM office in DoD">DoD直轄のプログラム・マネジメント体制を創設</li>
         </ul>
       </div>
-      <div class="card" onclick="openModal('concept')">
+      <div class="card" onclick="showModal('concept')">
         <h3 data-ja="🧩 コンセプト（レイヤー化）" data-en="🧩 Concept (Layered)">🧩 コンセプト（レイヤー化）</h3>
         <ul class="list">
           <li data-ja="宇宙配備センサー/迎撃（検討中）" data-en="Space-based sensing/intercept (in study)">宇宙配備センサー/迎撃（検討中）</li>
@@ -241,7 +241,7 @@
   <div id="modal-card" style="background:#fff;max-width:720px;width:92%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e2e8f0">
       <div id="modal-title" style="font-weight:800"></div>
-      <button class="btn" onclick="closeModal()">×</button>
+      <button class="btn" onclick="hideModal()">×</button>
     </div>
     <div id="modal-body" style="padding:16px;max-height:70vh;overflow:auto"></div>
   </div>
@@ -382,7 +382,7 @@ function buildSystems() {
   grid.innerHTML = "";
   data.systems.forEach(s => {
     const c = el('div', {class:'card', 'data-name': s.name.toLowerCase() + ' ' + s.type.toLowerCase() + ' ' + s.domain.toLowerCase()});
-    c.onclick = () => openSystem(s);
+    c.onclick = () => showDetail(s);
     c.innerHTML = `
       <h3>${s.name} <span class="pill">${s.type}</span> <span class="pill">${s.domain}</span></h3>
       <div class="muted small">${s.notes || ""}</div>
@@ -441,12 +441,13 @@ function buildIndustry() {
   });
 }
 
-function switchTab(id) {
+function showTab(id) {
   document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('active', t.getAttribute('data-tab')===id));
   document.querySelectorAll('.panel').forEach(p=> p.style.display = (p.id===id)?'block':'none');
+  console.log(`Tab switched to: ${id}`);
 }
 
-function openModal(key) {
+function showModal(key, data) {
   const titleMap = {
     funding: { ja:"💵 25B$ 初期資金（CRS IN12576）", en:"💵 $25B Initial Funding (CRS IN12576)"},
     layers:  { ja:"🧩 4層アーキテクチャ（2025-08）", en:"🧩 4-Layer Architecture (Aug 2025)"},
@@ -486,9 +487,10 @@ function openModal(key) {
   document.getElementById('modal-title').innerText = (currentLang==='ja')? titleMap.ja : titleMap.en;
   document.getElementById('modal-body').innerText = (currentLang==='ja')? bodyMap.ja : bodyMap.en;
   document.getElementById('modal').style.display = 'flex';
+  console.log(`Modal opened: ${key}`);
 }
 
-function openSystem(s) {
+function showDetail(s) {
   const title = s.name + " — " + s.type + " / " + s.domain;
   const body = (currentLang==='ja')? s.desc.ja : s.desc.en;
   document.getElementById('modal-title').innerText = title;
@@ -498,12 +500,16 @@ function openSystem(s) {
     <div class='inline-note muted'>${s.notes||""}</div>
   `;
   document.getElementById('modal').style.display = 'flex';
+  console.log(`Detail shown for system: ${s.name}`);
 }
 
-function closeModal() { document.getElementById('modal').style.display='none'; }
+function hideModal() { 
+  document.getElementById('modal').style.display='none';
+  console.log('Modal closed');
+}
 
 let currentLang = 'ja';
-function setLang(lang) {
+function setLanguage(lang) {
   currentLang = lang;
   document.getElementById('btn-ja').classList.toggle('active', lang==='ja');
   document.getElementById('btn-en').classList.toggle('active', lang==='en');
@@ -511,12 +517,21 @@ function setLang(lang) {
     const txt = el.getAttribute(lang==='ja' ? 'data-ja' : 'data-en');
     if(txt) el.textContent = txt;
   });
+  console.log(`Language changed to: ${lang}`);
 }
 
-buildSystems();
-buildMatrix();
-buildTimeline();
-buildIndustry();
+// 統一初期化関数
+function initializeArticle() {
+  buildSystems();
+  buildMatrix();
+  buildTimeline();
+  buildIndustry();
+  setLanguage(currentLang || 'ja');
+  console.log('Article initialized');
+}
+
+// 初期化実行
+initializeArticle();
 </script>
 </body>
 </html>

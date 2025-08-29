@@ -3,7 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
-import { formatDate, formatReadTime, getCategoryColor } from '@/lib/utils';
+import { formatDate, formatReadTime, getCategoryColor, getCategoryName } from '@/lib/utils';
+import { useLanguage, LANGUAGE_LABELS, LanguageBadge } from '@/hooks/useLanguage';
+import { getTechTag } from '@/lib/techTags';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Calendar, Clock, Eye, ArrowRight } from 'lucide-react';
@@ -21,6 +23,9 @@ export function ArticleCard({
   showStats = true, 
   className = '' 
 }: ArticleCardProps) {
+  const { language } = useLanguage();
+  const labels = LANGUAGE_LABELS[language];
+
   return (
     <Card className={`card-hover overflow-hidden ${className}`}>
       {/* カテゴリ表示用のトップバー */}
@@ -29,16 +34,24 @@ export function ArticleCard({
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-3">
-              <Badge 
-                variant="secondary" 
-                className={getCategoryColor(article.category)}
-              >
-                {article.category}
-              </Badge>
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              {/* 技術タグ表示（最大3個） */}
+              {article.primaryTechTags && article.primaryTechTags.map((tagId) => {
+                const techTag = getTechTag(tagId);
+                if (!techTag) return null;
+                return (
+                  <Badge 
+                    key={tagId}
+                    className={`${techTag.bgColor} ${techTag.color} ${techTag.borderColor} border text-xs`}
+                  >
+                    {language === 'ja' ? techTag.nameJa : techTag.nameEn}
+                  </Badge>
+                );
+              })}
+              <LanguageBadge languages={article.contentLanguages} />
               {article.featured && (
                 <Badge variant="destructive" className="text-xs">
-                  注目
+                  {language === 'ja' ? '注目' : 'Featured'}
                 </Badge>
               )}
             </div>
@@ -59,7 +72,7 @@ export function ArticleCard({
                 <>
                   <div className="flex items-center gap-1">
                     <Clock className="h-4 w-4" />
-                    <span>{formatReadTime(article.readTime)}で読める</span>
+                    <span>{formatReadTime(article.readTime, language)}{language === 'ja' ? 'で読める' : ' read'}</span>
                   </div>
                   
                   {article.viewCount > 0 && (
@@ -73,7 +86,7 @@ export function ArticleCard({
             </div>
             
             <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
-              <span>著者: {article.author}</span>
+              <span>{language === 'ja' ? '著者' : 'Author'}: {article.author}</span>
             </div>
           </div>
         </div>
@@ -85,29 +98,12 @@ export function ArticleCard({
             {article.excerpt}
           </p>
           
-          <div className="flex items-center justify-between">
-            <div className="flex flex-wrap gap-2">
-              {article.tags.slice(0, 3).map((tag, index) => (
-                <Badge 
-                  key={index} 
-                  variant="outline" 
-                  className="text-xs"
-                >
-                  {tag}
-                </Badge>
-              ))}
-              {article.tags.length > 3 && (
-                <Badge variant="outline" className="text-xs">
-                  +{article.tags.length - 3}
-                </Badge>
-              )}
-            </div>
-            
+          <div className="flex items-center justify-end">
             <Link 
               href={`/articles/${article.slug}`}
               className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm transition-colors group"
             >
-              続きを読む
+              {labels.readMore}
               <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
