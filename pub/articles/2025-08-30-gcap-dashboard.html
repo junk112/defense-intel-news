@@ -512,15 +512,21 @@
         }
         
         #modal {
-            position: fixed;
-            inset: 0;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
             display: none;
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
-            z-index: 1000;
+            z-index: 9999 !important;
             animation: fadeIn 0.3s ease;
+            /* CSS名前空間システムの制約を回避 */
+            transform: none !important;
+            margin: 0 !important;
         }
         
         .modal-content {
@@ -531,11 +537,21 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(100, 181, 246, 0.3);
             animation: slideUp 0.3s ease;
+            position: relative;
+            margin: auto;
+            max-height: 90vh;
+            overflow: hidden;
         }
         
         @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { 
+                transform: translateY(30px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
         }
         
         .modal-header {
@@ -2060,6 +2076,12 @@
             const body = document.getElementById('modal-body');
             
             if(modal) {
+                // 【根本的解決】モーダルを.article-contentの外（body直下）に移動
+                if(modal.parentElement !== document.body) {
+                    document.body.appendChild(modal);
+                    console.log('[GCAP Fix] Modal moved to body root to escape CSS namespace constraints');
+                }
+                
                 if(title && data?.title) {
                     title.textContent = typeof data.title === 'object' ? 
                         data.title[currentLang] : data.title;
@@ -2068,6 +2090,16 @@
                     body.innerHTML = typeof data.content === 'object' ? 
                         data.content[currentLang] : data.content;
                 }
+                
+                // CSS名前空間システムの制約を完全回避
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100vw';
+                modal.style.height = '100vh';
+                modal.style.zIndex = '9999';
+                modal.style.transform = 'none';
+                modal.style.margin = '0';
                 modal.style.display = 'flex';
                 modal.classList.add('active');
             }
