@@ -788,24 +788,22 @@
         // 現在の言語
         let currentLang = 'ja';
         
-        // 言語設定
+        // 1. setLanguage(lang) - 言語切り替え【全記事必須】
         function setLanguage(lang) {
             currentLang = lang;
+            window.currentLang = lang;  // React状態との同期
             
-            // ボタンのアクティブ状態を更新
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+            // 言語ボタンのアクティブ状態更新
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[onclick*="${lang}"]`)?.classList.add('active');
             
-            // すべての要素のテキストを更新
-            document.querySelectorAll('[data-ja]').forEach(elem => {
-                if (elem.hasAttribute('data-' + lang)) {
-                    elem.textContent = elem.getAttribute('data-' + lang);
-                }
+            // data-ja/data-en属性による自動テキスト更新
+            document.querySelectorAll('[data-ja]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if(text) el.textContent = text;
             });
             
-            // カードのヒントテキストを更新
+            // カードのヒントテキストを更新（この記事固有の機能）
             document.querySelectorAll('.card').forEach(card => {
                 const hintAttr = lang === 'ja' ? 'data-hint-ja' : 'data-hint-en';
                 if (card.hasAttribute(hintAttr)) {
@@ -813,8 +811,10 @@
                 }
             });
             
-            // ローカルストレージに保存
+            // ローカルストレージに保存（この記事固有の機能）
             localStorage.setItem('language', lang);
+            
+            console.log(`Language changed to: ${lang}`);
         }
         
         // 詳細データ定義（日英対応）- 完全版

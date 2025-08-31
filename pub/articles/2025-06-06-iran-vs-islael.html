@@ -1080,6 +1080,7 @@
         // 1. setLanguage(lang) - 言語切り替え【必須】
         function setLanguage(lang) {
             currentLang = lang;
+            window.currentLang = lang;  // React状態との同期
             
             // 言語ボタンのアクティブ状態更新
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));

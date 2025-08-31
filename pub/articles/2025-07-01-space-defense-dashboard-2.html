@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宇宙領域防衛指針ダッシュボード | 防衛省 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --glass: rgba(30, 41, 59, 0.8);
+            --border: rgba(148, 163, 184, 0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ヘッダー */
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .year-badge {
+            background: var(--secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* 言語切替 */
+        .language-switch {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 0.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .lang-btn:hover {
+            background: rgba(148, 163, 184, 0.1);
+        }
+
+        .lang-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* タブナビゲーション - 改善版 */
+        .tabs {
+            max-width: 1400px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .tabs::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .tabs::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .tabs::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .tab {
+            padding: 0.75rem 1.25rem;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 500;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .tab:hover {
+            background: rgba(51, 65, 85, 0.6);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* モバイル用タブアイコン */
+        .tab-icon {
+            display: none;
+            font-size: 1.25rem;
+        }
+
+        .tab-text {
+            display: inline;
+        }
+
+        /* パネル */
+        .panel {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードグリッド */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            background: rgba(51, 65, 85, 0.8);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        /* タイムライン */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: var(--secondary);
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: auto;
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .timeline-content {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.02);
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .timeline-date {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* プログレスバー */
+        .progress-section {
+            margin-top: 3rem;
+        }
+
+        .progress-item {
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .progress-bar {
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 8px;
+            transition: width 1s ease-out;
+        }
+
+        /* モーダル */
+        #modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            max-width: 720px;
+            width: 92%;
+            max-height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        #modal-title {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.25rem;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        #modal-body {
+            padding: 1.5rem;
+            max-height: calc(85vh - 80px);
+            overflow-y: auto;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        /* テクノロジーグリッド */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-item:hover {
+            background: rgba(51, 65, 85, 0.8);
+            transform: translateX(4px);
+        }
+
+        .tech-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.25rem;
+        }
+
+        .tech-info {
+            flex: 1;
+        }
+
+        .tech-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .tech-status {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* 統計セクション */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .list-item {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .list-item:hover {
+            background: rgba(51, 65, 85, 0.8);
+            transform: translateX(4px);
+        }
+
+        .list-item strong {
+            color: var(--text-primary);
+        }
+
+        /* レスポンシブ - 改善版 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            /* タブのモバイル対応 */
+            .tabs {
+                padding: 0 0.5rem;
+                gap: 0.25rem;
+            }
+
+            .tab {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                min-width: auto;
+            }
+
+            .tab-icon {
+                display: inline;
+                margin-right: 0.25rem;
+            }
+
+            .tab-text {
+                display: none;
+            }
+
+            .tab.active .tab-text {
+                display: inline;
+            }
+
+            /* タイムライン調整 */
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                justify-content: flex-start;
+                padding-left: 50px;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            /* カードグリッド調整 */
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tab {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* スクロールバー */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>
+                <span data-ja="🚀 宇宙領域防衛指針" data-en="🚀 Space Domain Defense Guidelines">🚀 宇宙領域防衛指針</span>
+                <span class="year-badge">2025.07</span>
+            </h1>
+            <div class="language-switch">
+                <button class="lang-btn active" onclick="setLanguage('ja')">日本語</button>
+                <button class="lang-btn" onclick="setLanguage('en')">English</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('overview')">
+            <span class="tab-icon">📊</span>
+            <span class="tab-text" data-ja="概要" data-en="Overview">概要</span>
+        </div>
+        <div class="tab" onclick="showTab('capabilities')">
+            <span class="tab-icon">🎯</span>
+            <span class="tab-text" data-ja="防衛能力強化" data-en="Defense Capabilities">防衛能力強化</span>
+        </div>
+        <div class="tab" onclick="showTab('technology')">
+            <span class="tab-icon">⚡</span>
+            <span class="tab-text" data-ja="技術開発" data-en="Technology">技術開発</span>
+        </div>
+        <div class="tab" onclick="showTab('timeline')">
+            <span class="tab-icon">📅</span>
+            <span class="tab-text" data-ja="実施計画" data-en="Timeline">実施計画</span>
+        </div>
+        <div class="tab" onclick="showTab('cooperation')">
+            <span class="tab-icon">🤝</span>
+            <span class="tab-text" data-ja="国際連携" data-en="Cooperation">国際連携</span>
+        </div>
+    </div>
+
+    <!-- 概要パネル -->
+    <section id="overview" class="panel">
+        <h2 class="section-title" data-ja="宇宙防衛の新時代" data-en="New Era of Space Defense">宇宙防衛の新時代</h2>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">1768億</div>
+                <div class="stat-label" data-ja="宇宙予算（2026年度）" data-en="Space Budget (FY2026)">宇宙予算（2026年度）</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2027</div>
+                <div class="stat-label" data-ja="航空宇宙自衛隊発足" data-en="Aerospace SDF Launch">航空宇宙自衛隊発足</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3000km</div>
+                <div class="stat-label" data-ja="監視範囲" data-en="Surveillance Range">監視範囲</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label" data-ja="常時監視体制" data-en="Continuous Monitoring">常時監視体制</div>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card" onclick="showDetail({
+                name: '現在の脅威環境',
+                desc: {
+                    ja: '中国は軍用衛星を顕著に増加させ、長距離精密打撃に資する衛星コンステレーション構築を推進し、軍のC4ISR能力を急速に向上。ロシアによるウクライナ侵略では、民間の商用衛星画像や通信衛星コンステレーションが軍事作戦に利用され、宇宙における民間力の活用が戦況に大きな影響を与えている。',
+                    en: 'China significantly increases military satellites, builds constellation for long-range precision strikes, rapidly enhancing C4ISR capabilities. In Ukraine conflict, commercial satellite imagery and communication constellations used for military operations, civilian space capabilities significantly impacting warfare.'
+                }
+            })">
+                <div class="card-icon">⚠️</div>
+                <div class="card-title" data-ja="脅威環境" data-en="Threat Environment">脅威環境</div>
+                <div class="card-description" data-ja="中露の宇宙軍事化と実戦での活用" data-en="China-Russia space militarization">中露の宇宙軍事化と実戦での活用</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '具体的な宇宙脅威',
+                desc: {
+                    ja: 'キラー衛星に資する技術開発、RPO（接近・近傍活動）等の実証実験、DA-ASATミサイル（直接上昇型対衛星ミサイル）の開発・実験が活発化。スペースデブリの急増も含め、宇宙空間における脅威とリスクが急速に拡大している。',
+                    en: 'Development of killer satellite technologies, RPO demonstration experiments, DA-ASAT missile development and testing intensifying. Including rapid increase in space debris, threats and risks in space domain expanding rapidly.'
+                }
+            })">
+                <div class="card-icon">💥</div>
+                <div class="card-title" data-ja="宇宙脅威の具体例" data-en="Specific Space Threats">宇宙脅威の具体例</div>
+                <div class="card-description" data-ja="キラー衛星・ASAT・デブリ" data-en="Killer satellites, ASAT, debris">キラー衛星・ASAT・デブリ</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '航空宇宙自衛隊（仮称）への改編',
+                desc: {
+                    ja: '2027年度を目処に航空自衛隊を「航空宇宙自衛隊（仮称）」へ改組。宇宙作戦集団（仮称）を新編し、航空宇宙幕僚監部（仮称）へ改称。宇宙領域における作戦を陸上・海上・航空作戦と同等の重要性を持つものとして位置づけ、約70年ぶりの大変革を実施。',
+                    en: 'Reorganize ASDF into Aerospace Self-Defense Force (provisional) by FY2027. Establish Space Operations Group, rename to Aerospace Staff Office. Position space domain operations with equal importance to land, sea, and air operations - major reform after 70 years.'
+                }
+            })">
+                <div class="card-icon">✈️</div>
+                <div class="card-title" data-ja="組織改革" data-en="Organizational Reform">組織改革</div>
+                <div class="card-description" data-ja="2027年度航空宇宙自衛隊へ" data-en="To Aerospace SDF by FY2027">2027年度航空宇宙自衛隊へ</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '意思決定の優越',
+                desc: {
+                    ja: '各級指揮官が我が国周辺の動態情報や戦況をリアルタイムに把握し、「状況認識」「状況判断」「決心」「行動」の意思決定サイクルを相手方よりも正確かつ迅速に回すことで、「意思決定の優越」を確保。AIやデジタルツインを活用した戦況の可視化を推進。',
+                    en: 'Commanders at all levels gain real-time situational awareness, accelerate OODA loop (Observe, Orient, Decide, Act) faster and more accurately than adversaries to achieve decision superiority. Promote battlefield visualization using AI and digital twin technology.'
+                }
+            })">
+                <div class="card-icon">🧠</div>
+                <div class="card-title" data-ja="意思決定の優越" data-en="Decision Superiority">意思決定の優越</div>
+                <div class="card-description" data-ja="OODAループの高速化" data-en="Accelerating OODA Loop">OODAループの高速化</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '新たな宇宙活動領域',
+                desc: {
+                    ja: 'ISS（国際宇宙ステーション）運用終了に伴う民間による地球低軌道の利用進展、アルテミス計画をはじめとするシスルナ領域（地球から月までの間の領域）以遠の探査プログラムの推進により、宇宙における活動領域が拡大。AI、光通信等の新技術により衛星機能が飛躍的に向上。',
+                    en: 'With ISS decommissioning, private LEO utilization advances. Artemis program extends activities to cislunar space and beyond. AI and optical communications dramatically enhance satellite capabilities.'
+                }
+            })">
+                <div class="card-icon">🌙</div>
+                <div class="card-title" data-ja="活動領域の拡大" data-en="Expanding Activity Domain">活動領域の拡大</div>
+                <div class="card-description" data-ja="シスルナ領域への展開" data-en="Expansion to cislunar space">シスルナ領域への展開</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '防衛力と経済力の好循環',
+                desc: {
+                    ja: '民間の革新的サービスや技術を取り込み、デュアルユース技術開発投資を促進。宇宙戦略基金等の研究開発支援プログラムとの連携を強化。クリティカルコンポーネント（必要不可欠な物資・部品）の国内サプライチェーン構築を推進。',
+                    en: 'Incorporate innovative commercial services and technologies, promote dual-use technology investment. Strengthen collaboration with space strategy fund R&D programs. Build domestic supply chains for critical components.'
+                }
+            })">
+                <div class="card-icon">💰</div>
+                <div class="card-title" data-ja="経済との好循環" data-en="Economic Synergy">経済との好循環</div>
+                <div class="card-description" data-ja="デュアルユース技術の促進" data-en="Promoting dual-use technology">デュアルユース技術の促進</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 防衛能力強化パネル -->
+    <section id="capabilities" class="panel" style="display:none">
+        <h2 class="section-title" data-ja="4つの防衛能力強化アプローチ" data-en="Four Defense Capability Enhancement Approaches">4つの防衛能力強化アプローチ</h2>
+        
+        <div class="card-grid">
+            <div class="card" onclick="showDetail({
+                name: '迅速かつ的確な戦況把握',
+                desc: {
+                    ja: 'スタンド・オフ防衛能力の実効性確保のため、移動目標のリアルタイム探知・追尾能力を構築。HGV（極超音速滑空兵器）の探知・追尾、AIやデジタルツインを用いた戦況の可視化を推進。',
+                    en: 'Build real-time detection and tracking capabilities for moving targets to ensure stand-off defense effectiveness. Promote HGV detection/tracking and battlefield visualization using AI and digital twins.'
+                }
+            })">
+                <div class="card-icon">🔍</div>
+                <div class="card-title" data-ja="戦況把握" data-en="Situational Awareness">戦況把握</div>
+                <div class="card-description" data-ja="リアルタイム探知・追尾能力" data-en="Real-time detection & tracking">リアルタイム探知・追尾能力</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '作戦の基盤となる衛星通信',
+                desc: {
+                    ja: '多層的で抗たん性の高い衛星通信ネットワークを構築。次期防衛通信衛星の整備、AIを活用したオンボード処理、同盟国との相互運用性確保、商用サービスの活用を推進。',
+                    en: 'Build multi-layered, resilient satellite communication networks. Develop next-generation defense satellites, AI-based onboard processing, interoperability with allies, and utilize commercial services.'
+                }
+            })">
+                <div class="card-icon">📡</div>
+                <div class="card-title" data-ja="衛星通信確保" data-en="Satellite Communications">衛星通信確保</div>
+                <div class="card-description" data-ja="抗たん性の高い通信網" data-en="Resilient communication network">抗たん性の高い通信網</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '機能保証（Mission Assurance）',
+                desc: {
+                    ja: 'SDA能力の強化、衛星の防護能力構築、宇宙システム全体の抗たん性強化、即応的な対処・回復能力の向上を推進。宇宙物体の位置・軌道把握から各国の衛星運用状況・意図・能力の把握へ。',
+                    en: 'Strengthen SDA capabilities, build satellite protection, enhance overall space system resilience, and improve responsive response/recovery. Advance from tracking space objects to understanding satellite operations, intentions, and capabilities of other nations.'
+                }
+            })">
+                <div class="card-icon">🛡️</div>
+                <div class="card-title" data-ja="機能保証" data-en="Mission Assurance">機能保証</div>
+                <div class="card-description" data-ja="衛星防護と抗たん性強化" data-en="Satellite protection & resilience">衛星防護と抗たん性強化</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '相手方の妨害能力',
+                desc: {
+                    ja: '宇宙領域への対応として、相手方の指揮統制・情報通信等を妨げる能力を強化。必要な技術に係る研究開発を推進し、宇宙利用の形態の多様化や多層化に対応。',
+                    en: 'Strengthen capabilities to disrupt adversary command/control and communications in the space domain. Advance R&D for necessary technologies to counter diversified and multi-layered space utilization.'
+                }
+            })">
+                <div class="card-icon">⚔️</div>
+                <div class="card-title" data-ja="対抗能力" data-en="Counter Capabilities">対抗能力</div>
+                <div class="card-description" data-ja="指揮統制・通信の妨害" data-en="C2 & communication disruption">指揮統制・通信の妨害</div>
+            </div>
+        </div>
+
+
+    </section>
+
+    <!-- 技術開発パネル -->
+    <section id="technology" class="panel" style="display:none">
+        <h2 class="section-title" data-ja="先端技術開発プログラム" data-en="Advanced Technology Development Program">先端技術開発プログラム</h2>
+        
+        <div class="tech-grid">
+            <div class="tech-item" onclick="showDetail({
+                name: '衛星コンステレーション',
+                desc: {
+                    ja: '広域かつ高精度で観測可能な大型地球観測衛星と、高頻度で観測可能な小型衛星群を組み合わせ、リアルタイムかつ効率的な情報収集を実現。衛星間光通信やオンボードでのAIによる目標識別といった先端技術を確立。静止光学衛星等による常時かつ広範囲の観測も検討。',
+                    en: 'Combine large Earth observation satellites with wide-area high-precision capabilities and small satellite clusters for high-frequency observation. Establish advanced technologies including inter-satellite optical communications and onboard AI target identification. Consider continuous wide-area observation from GEO optical satellites.'
+                }
+            })">
+                <div class="tech-icon">🛰️</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="衛星コンステレーション" data-en="Satellite Constellation">衛星コンステレーション</div>
+                    <div class="tech-status" data-ja="開発中" data-en="In Development">開発中</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: 'HGV探知・追尾システム',
+                desc: {
+                    ja: 'HTV-X（新型宇宙ステーション補給機）宇宙実証プラットフォームを活用した赤外線センサーの宇宙観測実証。超高精細広帯域赤外線センサー、赤外線以外の検知手段、小型光通信端末の研究開発を実施。2024年4月の日米首脳共同声明で、将来的な地球低軌道のHGV探知・追尾コンステレーションに関する日米協力の意図を発表。',
+                    en: 'Space observation demonstration using HTV-X platform. Develop ultra-high-definition broadband infrared sensors, non-infrared detection methods, and compact optical communication terminals. Japan-US cooperation on future LEO HGV detection/tracking constellation announced at April 2024 summit.'
+                }
+            })">
+                <div class="tech-icon">🎯</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="HGV探知・追尾システム" data-en="HGV Detection & Tracking">HGV探知・追尾システム</div>
+                    <div class="tech-status" data-ja="実証段階" data-en="Testing Phase">実証段階</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: '戦術AI衛星',
+                desc: {
+                    ja: '戦術通信能力を有する小型衛星にAIを搭載した戦術AI衛星の実証を推進。各種衛星で収集した大量の情報を衛星上で統合処理し、極めて短時間のうちに処理・解析。シューターまで連接する指揮統制能力を強化し、幅広い任務に効果的に活用。',
+                    en: 'Advance tactical AI satellite demonstration with AI-equipped small satellites. Process and analyze vast amounts of information from various satellites onboard in extremely short time. Strengthen C2 capabilities to shooters for effective utilization across broad missions.'
+                }
+            })">
+                <div class="tech-icon">🤖</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="戦術AI衛星" data-en="Tactical AI Satellite">戦術AI衛星</div>
+                    <div class="tech-status" data-ja="研究段階" data-en="Research Phase">研究段階</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: '次期防衛通信衛星',
+                desc: {
+                    ja: 'Xバンドに加えKa帯利用、デジタル通信ペイロード搭載により抗たん性強化と通信容量拡大。高性能化に伴い増大する機器の発熱を宇宙空間で効率的に排出する熱制御技術、電波妨害や傍受対策をはじめとする高抗たん化技術等を開発。',
+                    en: 'Enhanced resilience and capacity through Ka-band and digital payload. Develop thermal control technology for efficient heat dissipation in space, and high-resilience technologies including jamming and interception countermeasures.'
+                }
+            })">
+                <div class="tech-icon">📡</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="次期防衛通信衛星" data-en="Next-Gen Defense Satellite">次期防衛通信衛星</div>
+                    <div class="tech-status" data-ja="設計段階" data-en="Design Phase">設計段階</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: 'HAPS通信システム',
+                desc: {
+                    ja: 'HAPS（High Altitude Platform Stations）通信サービスの実証や国産HAPSの研究開発を推進。成層圏における通信プラットフォームにより、宇宙空間のみならず成層圏も含めた多層的な通信網を構築。冗長性確保のための重要技術。',
+                    en: 'Advance HAPS communication service demonstration and domestic HAPS R&D. Build multi-layered communication networks including stratosphere platforms beyond space alone. Critical technology for redundancy.'
+                }
+            })">
+                <div class="tech-icon">🎈</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="HAPS通信" data-en="HAPS Communications">HAPS通信</div>
+                    <div class="tech-status" data-ja="実証推進" data-en="Demo Advancing">実証推進</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: 'GPI（滑空段階迎撃用誘導弾）',
+                desc: {
+                    ja: '日米両国によるGPI（Glide Phase Interceptor）の共同開発を推進。2030年代の完了を予定。HGVを滑空段階で迎撃する能力を獲得し、統合防空ミサイル防衛能力を強化。宇宙からのHGV探知・追尾ネットワークと連携。',
+                    en: 'Japan-US joint development of Glide Phase Interceptor. Scheduled completion in 2030s. Acquire capability to intercept HGVs in glide phase, strengthening integrated air and missile defense. Integrate with space-based HGV detection/tracking network.'
+                }
+            })">
+                <div class="tech-icon">🚀</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="GPI開発" data-en="GPI Development">GPI開発</div>
+                    <div class="tech-status" data-ja="日米共同開発" data-en="Japan-US Joint Dev">日米共同開発</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: 'SDA衛星',
+                desc: {
+                    ja: '2026年度打上げ予定。静止軌道帯の宇宙物体の特性を詳細に把握。地上レーダー等では把握が困難な軌道上の宇宙物体をより近傍から観測。複数機運用やセンサー数増加、商用サービス利用に向けた検討も推進。地球低軌道から静止軌道を含む他軌道の衛星の動きを検知する能力の構築。',
+                    en: 'Launch planned for FY2026. Detailed characterization of GEO space objects. Observe orbital objects from proximity. Advance multi-satellite operations, increased sensors, and commercial service utilization. Build capability to detect satellite movements from LEO to GEO.'
+                }
+            })">
+                <div class="tech-icon">🔭</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="SDA衛星" data-en="SDA Satellite">SDA衛星</div>
+                    <div class="tech-status" data-ja="開発最終段階" data-en="Final Development">開発最終段階</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: '即応型マルチミッション衛星',
+                desc: {
+                    ja: '軌道上での技術実証、各種観測等のマルチミッション対応。即応的な検査を可能とし、小型ロケットによる早期打上げを実現。DA-ASATミサイル等により衛星機能が損失した場合でも、即応的に補完する体制を整備。',
+                    en: 'Multi-mission capable for on-orbit demonstration and observations. Enable rapid inspection and early launch with small rockets. Establish responsive complementary system even when satellite functions lost to DA-ASAT missiles.'
+                }
+            })">
+                <div class="tech-icon">🚀</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="即応型衛星" data-en="Responsive Satellite">即応型衛星</div>
+                    <div class="tech-status" data-ja="実証準備" data-en="Demo Preparation">実証準備</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 3rem">
+            <div class="card" onclick="showDetail({
+                name: '重要技術分野',
+                desc: {
+                    ja: '光通信、EHF（ミリ波）、赤外線センサー、軌道上推薬補給・修理、VLEO（地球超低軌道）利用、再使用型ロケット、オンボードAI処理、耐ジャミング技術、ライダー衛星、デジタルツイン、熱制御技術など、防衛省・自衛隊として積極的に活用すべき技術を特定し開発を推進。',
+                    en: 'Identify and develop key technologies including optical communications, EHF (millimeter wave), infrared sensors, on-orbit refueling/servicing, VLEO utilization, reusable rockets, onboard AI processing, anti-jamming, LIDAR satellites, digital twins, and thermal control technologies.'
+                }
+            })">
+                <div class="card-icon">⚡</div>
+                <div class="card-title" data-ja="重要技術分野" data-en="Key Technology Areas">重要技術分野</div>
+                <div class="card-description" data-ja="優先開発技術の特定" data-en="Priority technology identification">優先開発技術の特定</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: 'サプライチェーン確保',
+                desc: {
+                    ja: '主に海外に依存している必要不可欠な物資、部品等（クリティカルコンポーネント）について、有事にも安定的に確保するべく、国内で構築すべきサプライチェーンについての検討を推進。キーデバイスであるセンサーや通信機器の国内技術向上。',
+                    en: 'Advance domestic supply chain construction for critical components currently dependent on overseas sources to ensure stable procurement even during contingencies. Improve domestic technology for key devices including sensors and communication equipment.'
+                }
+            })">
+                <div class="card-icon">🔧</div>
+                <div class="card-title" data-ja="サプライチェーン" data-en="Supply Chain">サプライチェーン</div>
+                <div class="card-description" data-ja="重要部品の国内確保" data-en="Domestic critical component security">重要部品の国内確保</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- タイムラインパネル -->
+    <section id="timeline" class="panel" style="display:none">
+        <h2 class="section-title" data-ja="実施計画タイムライン" data-en="Implementation Timeline">実施計画タイムライン</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2020年度</div>
+                    <h3 data-ja="宇宙作戦隊新編" data-en="Space Operations Squadron Established">宇宙作戦隊新編</h3>
+                    <p data-ja="航空自衛隊に宇宙作戦隊を新編し、宇宙領域における作戦能力の基盤を構築" data-en="Established Space Operations Squadron in ASDF, building foundation for space domain operations">航空自衛隊に宇宙作戦隊を新編し、宇宙領域における作戦能力の基盤を構築</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2021年度</div>
+                    <h3 data-ja="宇宙作戦群へ発展" data-en="Evolved to Space Operations Group">宇宙作戦群へ発展</h3>
+                    <p data-ja="宇宙作戦隊を宇宙作戦群へと発展させ、体制を強化" data-en="Evolved Space Operations Squadron to Group, strengthening organizational structure">宇宙作戦隊を宇宙作戦群へと発展させ、体制を強化</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2023年度</div>
+                    <h3 data-ja="SSA運用システム開始" data-en="SSA System Operations Begin">SSA運用システム開始</h3>
+                    <p data-ja="宇宙状況把握（SSA）運用システムの運用を開始し、米軍・JAXAとの連携を開始" data-en="Started SSA system operations and began cooperation with US Forces and JAXA">宇宙状況把握（SSA）運用システムの運用を開始し、米軍・JAXAとの連携を開始</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年度</div>
+                    <h3 data-ja="SSAレーダー運用開始" data-en="SSA Radar Operations Begin">SSAレーダー運用開始</h3>
+                    <p data-ja="地上からの宇宙物体観測能力を強化、在日米宇宙軍新編" data-en="Enhanced ground-based space object observation capabilities, US Space Force Japan established">地上からの宇宙物体観測能力を強化、在日米宇宙軍新編</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2026年度（予定）</div>
+                    <h3 data-ja="SDA衛星打上げ" data-en="SDA Satellite Launch">SDA衛星打上げ</h3>
+                    <p data-ja="静止軌道帯の宇宙物体の特性を詳細に把握する能力を獲得" data-en="Acquire capability for detailed characterization of space objects in geostationary orbit">静止軌道帯の宇宙物体の特性を詳細に把握する能力を獲得</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2030年代</div>
+                    <h3 data-ja="GPI共同開発完了" data-en="GPI Joint Development Complete">GPI共同開発完了</h3>
+                    <p data-ja="日米共同による滑空段階迎撃用誘導弾（GPI）の開発完了予定" data-en="Completion of Japan-US joint development of Glide Phase Interceptor">日米共同による滑空段階迎撃用誘導弾（GPI）の開発完了予定</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2027年度（目標）</div>
+                    <h3 data-ja="航空宇宙自衛隊（仮称）発足" data-en="Aerospace Self-Defense Force Launch">航空宇宙自衛隊（仮称）発足</h3>
+                    <p data-ja="航空自衛隊を航空宇宙自衛隊へ改組。宇宙作戦集団（仮称）新編、航空宇宙幕僚監部（仮称）へ改称等、約70年ぶりの大変革" data-en="Reorganize ASDF to Aerospace SDF. Establish Space Operations Group, rename to Aerospace Staff Office - major reform after 70 years">航空自衛隊を航空宇宙自衛隊へ改組。宇宙作戦集団（仮称）新編、航空宇宙幕僚監部（仮称）へ改称等、約70年ぶりの大変革</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 国際連携パネル -->
+    <section id="cooperation" class="panel" style="display:none">
+        <h2 class="section-title" data-ja="同盟国・同志国との連携" data-en="Alliance and Partnership Cooperation">同盟国・同志国との連携</h2>
+        
+        <div class="card-grid">
+            <div class="card" onclick="showDetail({
+                name: '日米宇宙協力の深化',
+                desc: {
+                    ja: 'SDA等に係る情報共有や協力体制の強化。将来的な地球低軌道のHGV探知・追尾コンステレーションに関する協力。PATS（Protected Anti-Jam Tactical SATCOM）への参加により衛星通信帯域を共有し抗たん性の高い通信を実現。ホステッド・ペイロード協力等を推進。2024年に在日米宇宙軍が横田飛行場に新編され、日米共同による宇宙を含む領域横断作戦を円滑に実施。',
+                    en: 'Strengthen SDA information sharing and cooperation. Future LEO HGV detection/tracking constellation cooperation. PATS participation for shared satellite bandwidth and resilient communications. Advance hosted payload cooperation. US Space Force Japan established at Yokota in 2024 for smooth joint cross-domain operations including space.'
+                }
+            })">
+                <div class="card-icon">🇺🇸</div>
+                <div class="card-title" data-ja="日米宇宙協力" data-en="Japan-US Space Cooperation">日米宇宙協力</div>
+                <div class="card-description" data-ja="PATS参加・在日米宇宙軍連携" data-en="PATS participation & USSF-J cooperation">PATS参加・在日米宇宙軍連携</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '多国間演習・枠組み',
+                desc: {
+                    ja: 'シュリーバー演習（米軍主催の宇宙安全保障に関する多国間机上演習）への継続的参加により、宇宙分野における同盟国・同志国との関係を強化。連合宇宙作戦イニシアチブ（CSpO Initiative）を通じて、宇宙安全保障に関する議論を実施し、宇宙利用の確保のための国際的な取組に積極的に関与。',
+                    en: 'Continuous participation in Schriever Wargame strengthens relationships with allies in space domain. Through Combined Space Operations Initiative, conduct space security discussions and actively engage in international efforts to secure space utilization.'
+                }
+            })">
+                <div class="card-icon">🌐</div>
+                <div class="card-title" data-ja="多国間連携" data-en="Multilateral Cooperation">多国間連携</div>
+                <div class="card-description" data-ja="シュリーバー演習・CSpO参加" data-en="Schriever & CSpO participation">シュリーバー演習・CSpO参加</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '技術協力と相互運用性',
+                desc: {
+                    ja: '同盟国・同志国との技術協力を推進。相互運用性を有する抗たん性の高い通信の確保、地球低軌道のHGV探知・追尾コンステレーション構築、宇宙システムの防護技術開発等で連携。宇宙領域における自律的な防衛能力を強化しつつ、能力向上と運用協力の両面で相互に補完し合う体制を構築。',
+                    en: 'Advance technology cooperation with allies. Collaborate on resilient interoperable communications, LEO HGV detection/tracking constellation, and space system protection. Build mutually complementary systems in capability enhancement and operational cooperation while strengthening autonomous defense capabilities.'
+                }
+            })">
+                <div class="card-icon">🔬</div>
+                <div class="card-title" data-ja="技術協力" data-en="Technology Cooperation">技術協力</div>
+                <div class="card-description" data-ja="共同研究開発の推進" data-en="Joint R&D advancement">共同研究開発の推進</div>
+            </div>
+        </div>
+
+        <h3 class="section-title" data-ja="国内連携体制" data-en="Domestic Cooperation System" style="margin-top: 3rem;">国内連携体制</h3>
+
+        <div class="tech-grid">
+            <div class="tech-item" onclick="showDetail({
+                name: 'JAXA連携強化',
+                desc: {
+                    ja: 'JAXAとの協力関係を更に強化。宇宙戦略基金等の研究開発支援プログラムとの連携、HTV-X宇宙実証プラットフォームの活用、宇宙天気の正確な把握や予測での協力、宇宙関連知見の蓄積を推進。JAXAの所管官庁である内閣府、総務省、文部科学省、経済産業省とも連携を強化し、政府一体で取組を推進。',
+                    en: 'Strengthen cooperation with JAXA. Collaborate with space strategy fund R&D programs, utilize HTV-X platform, cooperate on space weather monitoring/prediction, accumulate space knowledge. Strengthen coordination with Cabinet Office, MIC, MEXT, and METI for whole-of-government approach.'
+                }
+            })">
+                <div class="tech-icon">🏛️</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="JAXA連携" data-en="JAXA Cooperation">JAXA連携</div>
+                    <div class="tech-status" data-ja="協力強化中" data-en="Strengthening">協力強化中</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: '民間産業との協働',
+                desc: {
+                    ja: '民間企業、研究開発機関等とのコミュニケーションを密にし、デュアルユースを含む技術開発投資の促進。国内宇宙産業基盤の育成・強化、商用サービスの積極的活用、サプライチェーンの国内構築を推進。情報発信やニーズの提示により取組の予見可能性を高め、防衛力と経済力の好循環を創出。',
+                    en: 'Enhance communication with private companies and R&D institutions, promote dual-use technology investment. Foster domestic space industry, actively utilize commercial services, build domestic supply chains. Increase predictability through information sharing and needs presentation, create positive cycle between defense and economic power.'
+                }
+            })">
+                <div class="tech-icon">🏭</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="産業連携" data-en="Industry Cooperation">産業連携</div>
+                    <div class="tech-status" data-ja="拡大推進" data-en="Expanding">拡大推進</div>
+                </div>
+            </div>
+
+            <div class="tech-item" onclick="showDetail({
+                name: '宇宙戦略基金活用',
+                desc: {
+                    ja: '宇宙戦略基金といった他省庁の研究開発支援プログラムと安全保障の取組との連携を強化。宇宙技術戦略等の政策文書に防衛省・自衛隊のニーズを反映。宇宙基本計画や宇宙安全保障構想に沿って政府一体で取組を進める。',
+                    en: 'Strengthen linkage between space strategy fund R&D programs and security efforts. Reflect MOD/SDF needs in space technology strategy policy documents. Advance whole-of-government approach aligned with Basic Space Plan and Space Security Concept.'
+                }
+            })">
+                <div class="tech-icon">💴</div>
+                <div class="tech-info">
+                    <div class="tech-name" data-ja="宇宙戦略基金" data-en="Space Strategy Fund">宇宙戦略基金</div>
+                    <div class="tech-status" data-ja="連携強化" data-en="Enhancing Links">連携強化</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title" data-ja="人材育成・体制強化" data-en="Human Resource Development" style="margin-top: 3rem;">人材育成・体制強化</h3>
+
+        <div class="card-grid">
+            <div class="card" onclick="showDetail({
+                name: '宇宙人材育成プログラム',
+                desc: {
+                    ja: '防衛省・自衛隊全体で外部人材の登用と部内人材の育成を推進。必要となるスキルや素養を特定した上でキャリアパスを構築。宇宙領域関連業務経験者や関連分野の学位保有者を定期的に宇宙領域分野の業務やJAXA等のプロジェクトに派遣。新世代装備研究所での宇宙関連分野の研究経験により省内での人材育成と知見蓄積を推進。',
+                    en: 'Promote external recruitment and internal training across MOD/SDF. Build career paths after identifying required skills. Regularly assign personnel with space experience or relevant degrees to space operations and JAXA projects. Advance internal training and knowledge accumulation through space research at Next Generation Equipment Research Institute.'
+                }
+            })">
+                <div class="card-icon">👨‍🚀</div>
+                <div class="card-title" data-ja="人材育成" data-en="Human Resource Development">人材育成</div>
+                <div class="card-description" data-ja="キャリアパス構築・外部人材活用" data-en="Career path & external talent">キャリアパス構築・外部人材活用</div>
+            </div>
+
+            <div class="card" onclick="showDetail({
+                name: '組織体制の強化',
+                desc: {
+                    ja: '「航空宇宙自衛隊（仮称）」の発足を見据え、防衛省・自衛隊の宇宙関連施策を一体的に推進する体制を強化・効率化。宇宙領域専門部隊の体制拡充、新世代装備研究所及び防衛研究所における研究体制の強化。有識者による研修や米国政府主催の宇宙プログラムへの参加により、防衛省・自衛隊全体の宇宙領域への理解醸成・知識レベルの底上げ。',
+                    en: 'Strengthen and streamline integrated space policy implementation toward Aerospace SDF establishment. Expand space domain specialized units, strengthen research systems at Next Generation Equipment Research Institute and National Institute for Defense Studies. Enhance understanding through expert training and US government space program participation.'
+                }
+            })">
+                <div class="card-icon">🏢</div>
+                <div class="card-title" data-ja="組織体制強化" data-en="Organizational Strengthening">組織体制強化</div>
+                <div class="card-description" data-ja="研究体制・専門部隊の拡充" data-en="Expanding research & specialized units">研究体制・専門部隊の拡充</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- モーダル -->
+    <div id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div id="modal-title"></div>
+                <button class="modal-close" onclick="hideModal()">×</button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // グローバル変数
+        let currentLang = 'ja';
+
+        // 1. 言語切り替え【全記事必須】
+        function setLanguage(lang) {
+            currentLang = lang;
+            window.currentLang = lang;  // React状態との同期
+            
+            // 言語ボタンのアクティブ状態更新
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[onclick*="${lang}"]`)?.classList.add('active');
+            
+            // data-ja/data-en属性による自動テキスト更新
+            document.querySelectorAll('[data-ja]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if(text) el.textContent = text;
+            });
+            
+            console.log(`Language changed to: ${lang}`);
+        }
+
+        // 2. タブ切り替え【タブがある場合必須】
+        function showTab(tabId) {
+            // タブボタンのアクティブ状態更新
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick*="${tabId}"]`)?.classList.add('active');
+            
+            // パネル表示切り替え
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.style.display = 'none';
+                panel.classList.remove('active');
+            });
+            const targetPanel = document.getElementById(tabId);
+            if(targetPanel) {
+                targetPanel.style.display = 'block';
+                targetPanel.classList.add('active');
+                
+                // プログレスバーアニメーション再生
+                if(tabId === 'capabilities') {
+                    animateProgressBars();
+                }
+            }
+            
+            console.log(`Tab switched to: ${tabId}`);
+        }
+
+        // 3. モーダル表示【モーダルがある場合必須】
+        function showModal(modalId, data) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            
+            if(modal && title && body) {
+                if(data?.title) title.textContent = data.title;
+                if(data?.content) body.innerHTML = data.content;
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+            }
+            
+            console.log(`Modal opened: ${modalId}`);
+        }
+
+        // 4. モーダル非表示【モーダルがある場合必須】
+        function hideModal() {
+            const modal = document.getElementById('modal');
+            if(modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
+            
+            console.log('Modal closed');
+        }
+
+        // 5. 詳細表示【詳細表示がある場合実装】
+        function showDetail(detailData) {
+            const title = detailData.name;
+            const body = (currentLang === 'ja') ? detailData.desc.ja : detailData.desc.en;
+            
+            showModal('detail', {
+                title: title,
+                content: `<p>${body}</p>`
+            });
+            
+            console.log(`Detail shown for: ${detailData.name}`);
+        }
+
+        // プログレスバーアニメーション
+        function animateProgressBars() {
+            const bars = document.querySelectorAll('.progress-fill');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }
+
+        // 6. 記事初期化【必須】
+        function initializeArticle() {
+            // 初期言語設定
+            setLanguage(currentLang || 'ja');
+            
+            // 初期タブ表示
+            showTab('overview');
+            
+            // モーダル外クリックで閉じる
+            document.getElementById('modal')?.addEventListener('click', function(e) {
+                if(e.target === this) hideModal();
+            });
+            
+            // ESCキーでモーダルを閉じる
+            document.addEventListener('keydown', function(e) {
+                if(e.key === 'Escape') hideModal();
+            });
+            
+            console.log('Article initialized');
+        }
+
+        // 初期化実行
+        initializeArticle();
+    </script>
+</body>
+</html>
